@@ -1,11 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
 
-:root {
-}
-
 html,
 body {
-  background: linear-gradient(135deg, #7dd3fc 0%, #f0f8ff 70%, #ffffff 100%);
+  background: linear-gradient(135deg, #7dd3fc 0%, #f0f8ff 100%);
+  background-attachment: fixed;
   padding: 0;
   margin: 0;
   font-family:
@@ -29,6 +27,7 @@ a {
 }
 
 * {
+  color: #777;
   box-sizing: border-box;
   margin: 0;
 }

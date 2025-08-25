@@ -2,8 +2,36 @@
 
 import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
 import dayjs from "dayjs"
-import React, { FC, use, useEffect, useState } from "react"
+import React, { ComponentProps, FC, use, useEffect, useState } from "react"
 import { api } from "services/api"
+
+const impactScore = (c: Clipping) =>
+  (c.hatena_bookmark_count ?? 0) +
+  (c.yahoo_comment_count ?? 0) +
+  (c.facebook_engagement_count ?? 0) +
+  (c.view_count ?? 0)
+
+const snsPublisherMap: { [key: string]: string[] } = {
+  x: ["x.com"],
+  youtube: ["youtube"],
+  sns: ["facebook", "tiktok", "instagram", "threads"],
+} as const
+
+const FilterButton: FC<ComponentProps<"button">> = ({ style, ...props }) => {
+  return (
+    <button
+      {...props}
+      style={{
+        background: "#f9f9f9",
+        border: "none",
+        borderRadius: "1rem",
+        padding: ".5rem .75rem",
+        cursor: "pointer",
+        ...style,
+      }}
+    ></button>
+  )
+}
 
 const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
   const { id } = use(params)
@@ -12,33 +40,58 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
   const [date, setDate] = useState<dayjs.Dayjs>(
     dayjs().startOf("day").subtract(1, "days")
   )
+  const [filter, setFilter] = useState<{
+    sourcePublisher?: "news" | "youtube" | "x" | "sns"
+  }>({})
   useEffect(() => {
     const fetch = async () => {
-      const { project } = await api.v1.showProjectApiV1ClippingsProjectsIdGet({
-        id,
-      })
-      setProject(project)
-      if (project) {
-        const { clippings } = await api.v1.indexApiV1ClippingsGet({
-          projectId: project.id,
-          isPrimary: true,
-          publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
-          statusList: [
-            "SystemAccepted",
-            "SystemDenied",
-            "SystemPending",
-            "UserAccepted",
-            "UserDenied",
-            "UserPending",
-            "UnKnownHost",
-            "Error",
-          ],
+      if (project) return
+      const { project: p } =
+        await api.v1.showProjectApiV1ClippingsProjectsIdGet({
+          id,
         })
-        setClippings(clippings)
-      }
+      setProject(p)
+    }
+
+    fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
+  useEffect(() => {
+    const fetch = async () => {
+      if (!project) return
+      const { clippings } = await api.v1.indexApiV1ClippingsGet({
+        projectId: project.id,
+        publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
+        publishDateBefore: date.add(1, "days").format("YYYY-MM-DD HH:mm:ss"),
+        statusList: [
+          "SystemAccepted",
+          "SystemDenied",
+          "SystemPending",
+          "UserAccepted",
+          "UserDenied",
+          "UserPending",
+          "UnKnownHost",
+          "Error",
+        ],
+      })
+      setClippings(clippings)
     }
     fetch()
-  }, [])
+  }, [project, date])
+
+  const filteredClippings = clippings
+    ?.filter(
+      (c) =>
+        !filter.sourcePublisher ||
+        (filter.sourcePublisher === "news"
+          ? Object.values(snsPublisherMap)
+              .flat()
+              .every((p) => p !== c.source_publisher?.toLowerCase())
+          : snsPublisherMap[filter.sourcePublisher].includes(
+              c.source_publisher?.toLowerCase()
+            ))
+    )
+    .toSorted((a, b) => impactScore(b) - impactScore(a))
   return (
     <>
       {project ? (
@@ -54,26 +107,99 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                     textAlign: "center",
                   }}
                 >
-                  {project.name} {date.format("M/D")}
+                  {project.name}
                 </h2>
+                <div
+                  style={{ display: "flex", gap: ".5rem", padding: ".5rem" }}
+                >
+                  <select
+                    onChange={(e) => setDate(dayjs(e.target.value))}
+                    style={{
+                      background: "#f9f9f9",
+                      border: "none",
+                      borderRadius: "1rem",
+                      padding: ".5rem",
+                    }}
+                  >
+                    {Array(3)
+                      .fill(null)
+                      .map((_, i) => (
+                        <option
+                          key={i}
+                          value={dayjs()
+                            .startOf("day")
+                            .subtract(i + 1, "days")
+                            .startOf("day")
+                            .format("YYYY-MM-DD HH:mm:ss")}
+                        >
+                          {dayjs()
+                            .startOf("day")
+                            .subtract(i + 1, "days")
+                            .format("M/D")}
+                        </option>
+                      ))}
+                  </select>
+                  <FilterButton
+                    onClick={() =>
+                      setFilter({ ...filter, sourcePublisher: undefined })
+                    }
+                  >
+                    All
+                  </FilterButton>
+                  <FilterButton
+                    onClick={() =>
+                      setFilter({ ...filter, sourcePublisher: "news" })
+                    }
+                  >
+                    News
+                  </FilterButton>
+                  <FilterButton
+                    onClick={() =>
+                      setFilter({ ...filter, sourcePublisher: "youtube" })
+                    }
+                  >
+                    YouTube
+                  </FilterButton>
+                  <FilterButton
+                    onClick={() =>
+                      setFilter({ ...filter, sourcePublisher: "x" })
+                    }
+                  >
+                    X.com
+                  </FilterButton>
+                  <FilterButton
+                    onClick={() =>
+                      setFilter({
+                        ...filter,
+                        sourcePublisher: "sns",
+                      })
+                    }
+                  >
+                    Other SNS
+                  </FilterButton>
+                </div>
                 <div
                   style={{
                     background: "#eef2f6",
                     display: "flex",
                     flexDirection: "column",
                     gap: ".15rem",
-                    padding: ".15rem",
                   }}
                 >
                   <div
                     style={{
                       borderLeft: "solid 2px #777",
+                      display: "flex",
+                      justifyContent: "space-between",
                       padding: ".5rem",
                     }}
                   >
-                    News
+                    <div style={{ fontWeight: "bold" }}>News</div>
+                    <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
+                      {filteredClippings.length}件
+                    </div>
                   </div>
-                  {clippings.map((clipping) => (
+                  {filteredClippings.slice(0, 20).map((clipping) => (
                     <a
                       key={clipping.id}
                       href={clipping.url}
@@ -92,6 +218,9 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                         }}
                       >
                         {clipping.source_publisher}
+                        {clipping.category && (
+                          <>&nbsp;&gt; {clipping.category}</>
+                        )}
                       </p>
                       <h3
                         style={{
@@ -104,7 +233,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                           padding: 0,
                         }}
                       >
-                        {clipping.title}
+                        {clipping.original_title ?? clipping.title}
                       </h3>
                     </a>
                   ))}
