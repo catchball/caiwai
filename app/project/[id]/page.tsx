@@ -1,8 +1,9 @@
 "use client"
 
 import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
+import { FilterButton } from "components/elements/form"
 import dayjs from "dayjs"
-import React, { ComponentProps, FC, use, useEffect, useState } from "react"
+import React, { FC, use, useEffect, useState } from "react"
 import { api } from "services/api"
 
 const impactScore = (c: Clipping) =>
@@ -16,22 +17,6 @@ const snsPublisherMap: { [key: string]: string[] } = {
   youtube: ["youtube"],
   sns: ["facebook", "tiktok", "instagram", "threads"],
 } as const
-
-const FilterButton: FC<ComponentProps<"button">> = ({ style, ...props }) => {
-  return (
-    <button
-      {...props}
-      style={{
-        background: "#f9f9f9",
-        border: "none",
-        borderRadius: "1rem",
-        padding: ".5rem .75rem",
-        cursor: "pointer",
-        ...style,
-      }}
-    ></button>
-  )
-}
 
 const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
   const { id } = use(params)
@@ -140,6 +125,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                       ))}
                   </select>
                   <FilterButton
+                    isActive={!filter.sourcePublisher}
                     onClick={() =>
                       setFilter({ ...filter, sourcePublisher: undefined })
                     }
@@ -147,6 +133,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                     All
                   </FilterButton>
                   <FilterButton
+                    isActive={filter.sourcePublisher === "news"}
                     onClick={() =>
                       setFilter({ ...filter, sourcePublisher: "news" })
                     }
@@ -154,6 +141,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                     News
                   </FilterButton>
                   <FilterButton
+                    isActive={filter.sourcePublisher === "youtube"}
                     onClick={() =>
                       setFilter({ ...filter, sourcePublisher: "youtube" })
                     }
@@ -161,6 +149,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                     YouTube
                   </FilterButton>
                   <FilterButton
+                    isActive={filter.sourcePublisher === "x"}
                     onClick={() =>
                       setFilter({ ...filter, sourcePublisher: "x" })
                     }
@@ -168,6 +157,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
                     X.com
                   </FilterButton>
                   <FilterButton
+                    isActive={filter.sourcePublisher === "sns"}
                     onClick={() =>
                       setFilter({
                         ...filter,
