@@ -16,9 +16,9 @@
   "license": "ISC",
   "packageManager": "pnpm@10.15.0",
   "dependencies": {
-    "@catchball/tansaku-client": "^1.16.8",
+    "@catchball/tansaku-client": "^1.16.9",
     "dayjs": "^1.11.13",
-    "next": "^15.5.0",
+    "next": "^15.5.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -33,6 +33,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.40.0"
+    "typescript-eslint": "^8.41.0"
   }
 }
