@@ -6,6 +6,7 @@ import dayjs from "dayjs"
 import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
 import { PublisherCategory, snsPublisherMap } from "services/constant"
+import { Tweet } from "react-tweet"
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
@@ -191,42 +192,58 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                   {categrizedClippings[filter.sourcePublisher || "news"]
                     .slice(0, 20)
                     .map((clipping) => (
-                      <a
-                        key={clipping.id}
-                        href={clipping.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          background: "#f8f9fa",
-                          display: "block",
-                          textDecoration: "none",
-                          padding: "0.5rem",
-                        }}
-                      >
-                        <p
-                          style={{
-                            fontSize: ".75rem",
-                          }}
-                        >
-                          {clipping.source_publisher}
-                          {clipping.category && (
-                            <>&nbsp;&gt; {clipping.category}</>
-                          )}
-                        </p>
-                        <h3
-                          style={{
-                            color: "#66c",
-                            fontSize: ".8rem",
-                            fontWeight: "normal",
-                            height: "1.2rem",
-                            margin: 0,
-                            overflow: "hidden",
-                            padding: 0,
-                          }}
-                        >
-                          {clipping.original_title ?? clipping.title}
-                        </h3>
-                      </a>
+                      <React.Fragment key={clipping.id}>
+                        {filter.sourcePublisher == "x" ? (
+                          <div
+                            className="light"
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Tweet
+                              id={clipping.url.match(/status\/(\d+)/)?.[1]}
+                            />
+                          </div>
+                        ) : (
+                          <a
+                            key={clipping.id}
+                            href={clipping.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              background: "#f8f9fa",
+                              display: "block",
+                              textDecoration: "none",
+                              padding: "0.5rem",
+                            }}
+                          >
+                            <p
+                              style={{
+                                fontSize: ".75rem",
+                              }}
+                            >
+                              {clipping.source_publisher}
+                              {clipping.category && (
+                                <>&nbsp;&gt; {clipping.category}</>
+                              )}
+                            </p>
+                            <h3
+                              style={{
+                                color: "#66c",
+                                fontSize: ".8rem",
+                                fontWeight: "normal",
+                                height: "1.2rem",
+                                margin: 0,
+                                overflow: "hidden",
+                                padding: 0,
+                              }}
+                            >
+                              {clipping.original_title ?? clipping.title}
+                            </h3>
+                          </a>
+                        )}
+                      </React.Fragment>
                     ))}
                 </div>
               </>
