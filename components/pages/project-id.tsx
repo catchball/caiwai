@@ -5,41 +5,20 @@ import { FilterButton } from "components/elements/form"
 import dayjs from "dayjs"
 import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
+import { PublisherCategory, snsPublisherMap } from "services/constant"
 
-const impactScore = (c: Clipping) =>
-  (c.hatena_bookmark_count ?? 0) +
-  (c.yahoo_comment_count ?? 0) +
-  (c.facebook_engagement_count ?? 0) +
-  (c.view_count ?? 0)
-
-const snsPublisherMap: { [key: string]: string[] } = {
-  x: ["x.com"],
-  youtube: ["youtube"],
-  sns: ["facebook", "tiktok", "instagram", "threads"],
-} as const
-
-export const ProjectIdPage: FC<{ id: string }> = ({ id }) => {
-  const [project, setProject] = useState<ClippingProject>()
+export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
+  project,
+}) => {
   const [clippings, setClippings] = useState<Clipping[]>()
+  const [categrizedClippings, setCategrizedClippings] =
+    useState<{ [key in PublisherCategory]: Clipping[] }>()
   const [date, setDate] = useState<dayjs.Dayjs>(
     dayjs().startOf("day").subtract(1, "days")
   )
   const [filter, setFilter] = useState<{
-    sourcePublisher?: "news" | "youtube" | "x" | "sns"
+    sourcePublisher?: PublisherCategory
   }>({})
-  useEffect(() => {
-    const fetch = async () => {
-      if (project) return
-      const { project: p } =
-        await api.v1.showProjectApiV1ClippingsProjectsIdGet({
-          id,
-        })
-      setProject(p)
-    }
-
-    fetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
   useEffect(() => {
     const fetch = async () => {
       if (!project) return
@@ -59,23 +38,34 @@ export const ProjectIdPage: FC<{ id: string }> = ({ id }) => {
         ],
       })
       setClippings(clippings)
+      setCategrizedClippings({
+        news: clippings
+          .filter((c) =>
+            Object.values(snsPublisherMap)
+              .flat()
+              .every((p) => p !== c.source_publisher?.toLowerCase())
+          )
+          .toSorted((a, b) => b.score - a.score),
+        youtube: clippings
+          .filter((c) =>
+            snsPublisherMap.youtube.includes(c.source_publisher?.toLowerCase())
+          )
+          .toSorted((a, b) => b.score - a.score),
+        x: clippings
+          .filter((c) =>
+            snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
+          )
+          .toSorted((a, b) => b.score - a.score),
+        sns: clippings
+          .filter((c) =>
+            snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
+          )
+          .toSorted((a, b) => b.score - a.score),
+      })
     }
     fetch()
   }, [project, date])
 
-  const filteredClippings = clippings
-    ?.filter(
-      (c) =>
-        !filter.sourcePublisher ||
-        (filter.sourcePublisher === "news"
-          ? Object.values(snsPublisherMap)
-              .flat()
-              .every((p) => p !== c.source_publisher?.toLowerCase())
-          : snsPublisherMap[filter.sourcePublisher].includes(
-              c.source_publisher?.toLowerCase()
-            ))
-    )
-    .toSorted((a, b) => impactScore(b) - impactScore(a))
   return (
     <>
       {project ? (
@@ -131,41 +121,49 @@ export const ProjectIdPage: FC<{ id: string }> = ({ id }) => {
                   >
                     All
                   </FilterButton>
-                  <FilterButton
-                    isActive={filter.sourcePublisher === "news"}
-                    onClick={() =>
-                      setFilter({ ...filter, sourcePublisher: "news" })
-                    }
-                  >
-                    News
-                  </FilterButton>
-                  <FilterButton
-                    isActive={filter.sourcePublisher === "youtube"}
-                    onClick={() =>
-                      setFilter({ ...filter, sourcePublisher: "youtube" })
-                    }
-                  >
-                    YouTube
-                  </FilterButton>
-                  <FilterButton
-                    isActive={filter.sourcePublisher === "x"}
-                    onClick={() =>
-                      setFilter({ ...filter, sourcePublisher: "x" })
-                    }
-                  >
-                    X.com
-                  </FilterButton>
-                  <FilterButton
-                    isActive={filter.sourcePublisher === "sns"}
-                    onClick={() =>
-                      setFilter({
-                        ...filter,
-                        sourcePublisher: "sns",
-                      })
-                    }
-                  >
-                    Other SNS
-                  </FilterButton>
+                  {categrizedClippings.news.length > 0 && (
+                    <FilterButton
+                      isActive={filter.sourcePublisher === "news"}
+                      onClick={() =>
+                        setFilter({ ...filter, sourcePublisher: "news" })
+                      }
+                    >
+                      News
+                    </FilterButton>
+                  )}
+                  {categrizedClippings.youtube.length > 0 && (
+                    <FilterButton
+                      isActive={filter.sourcePublisher === "youtube"}
+                      onClick={() =>
+                        setFilter({ ...filter, sourcePublisher: "youtube" })
+                      }
+                    >
+                      YouTube
+                    </FilterButton>
+                  )}
+                  {categrizedClippings.x.length > 0 && (
+                    <FilterButton
+                      isActive={filter.sourcePublisher === "x"}
+                      onClick={() =>
+                        setFilter({ ...filter, sourcePublisher: "x" })
+                      }
+                    >
+                      X.com
+                    </FilterButton>
+                  )}
+                  {categrizedClippings.sns.length > 0 && (
+                    <FilterButton
+                      isActive={filter.sourcePublisher === "sns"}
+                      onClick={() =>
+                        setFilter({
+                          ...filter,
+                          sourcePublisher: "sns",
+                        })
+                      }
+                    >
+                      Other SNS
+                    </FilterButton>
+                  )}
                 </div>
                 <div
                   style={{
@@ -185,47 +183,51 @@ export const ProjectIdPage: FC<{ id: string }> = ({ id }) => {
                   >
                     <div style={{ fontWeight: "bold" }}>News</div>
                     <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
-                      {filteredClippings.length}件
+                      {categrizedClippings[filter.sourcePublisher]?.length ??
+                        clippings.length}
+                      件
                     </div>
                   </div>
-                  {filteredClippings.slice(0, 20).map((clipping) => (
-                    <a
-                      key={clipping.id}
-                      href={clipping.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        background: "#f8f9fa",
-                        display: "block",
-                        textDecoration: "none",
-                        padding: "0.5rem",
-                      }}
-                    >
-                      <p
+                  {categrizedClippings[filter.sourcePublisher || "news"]
+                    .slice(0, 20)
+                    .map((clipping) => (
+                      <a
+                        key={clipping.id}
+                        href={clipping.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{
-                          fontSize: ".75rem",
+                          background: "#f8f9fa",
+                          display: "block",
+                          textDecoration: "none",
+                          padding: "0.5rem",
                         }}
                       >
-                        {clipping.source_publisher}
-                        {clipping.category && (
-                          <>&nbsp;&gt; {clipping.category}</>
-                        )}
-                      </p>
-                      <h3
-                        style={{
-                          color: "#66c",
-                          fontSize: ".8rem",
-                          fontWeight: "normal",
-                          height: "1.2rem",
-                          margin: 0,
-                          overflow: "hidden",
-                          padding: 0,
-                        }}
-                      >
-                        {clipping.original_title ?? clipping.title}
-                      </h3>
-                    </a>
-                  ))}
+                        <p
+                          style={{
+                            fontSize: ".75rem",
+                          }}
+                        >
+                          {clipping.source_publisher}
+                          {clipping.category && (
+                            <>&nbsp;&gt; {clipping.category}</>
+                          )}
+                        </p>
+                        <h3
+                          style={{
+                            color: "#66c",
+                            fontSize: ".8rem",
+                            fontWeight: "normal",
+                            height: "1.2rem",
+                            margin: 0,
+                            overflow: "hidden",
+                            padding: 0,
+                          }}
+                        >
+                          {clipping.original_title ?? clipping.title}
+                        </h3>
+                      </a>
+                    ))}
                 </div>
               </>
             )}

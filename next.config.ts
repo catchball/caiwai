@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-  basePath: "/caiwai",
+  output: process.env.NODE_ENV == "production" ? "export" : undefined,
+  basePath: process.env.NODE_ENV == "production" ? "/caiwai" : undefined,
   trailingSlash: true,
   images: {
     unoptimized: true,
