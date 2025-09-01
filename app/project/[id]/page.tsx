@@ -23,5 +23,3 @@ export const generateStaticParams = async () => {
     .filter((p) => p.has_scheduled_export)
     .map((project) => ({ id: project.id }))
 }
-
-export const dynamicParams = true
