@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@catchball/tansaku-client':
-        specifier: ^1.16.9
-        version: 1.16.9
+        specifier: ^1.16.11
+        version: 1.16.11
       dayjs:
-        specifier: ^1.11.13
-        version: 1.11.13
+        specifier: ^1.11.18
+        version: 1.11.18
       next:
         specifier: ^15.5.2
         version: 15.5.2(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -31,8 +31,8 @@ importers:
         specifier: ^24.3.0
         version: 24.3.0
       '@types/react':
-        specifier: ^19.1.11
-        version: 19.1.11
+        specifier: ^19.1.12
+        version: 19.1.12
       eslint:
         specifier: ^9.34.0
         version: 9.34.0
@@ -60,8 +60,8 @@ importers:
 
 packages:
 
-  '@catchball/tansaku-client@1.16.9':
-    resolution: {integrity: sha512-BxjyoCBYT/7MnQFz/IMrOC8fTnPj3K37xyPp69+nsh4cSgTu19QG79cnAxZLrd4iuXb2oAnHubYO49nycQOhlA==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.16.9/b7491fb1f3c67af73e0dc8f69e9721569b22aa29}
+  '@catchball/tansaku-client@1.16.11':
+    resolution: {integrity: sha512-GNIvp5DZ7jmASvj3iedsmGrMHr6GVgLp+ShdJfsFsROnTAekhuTEIY68je52AbpUPLVaWBEsORXrI+aDbSzFSg==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.16.11/3cc0b7ba78c4ee743081fdf36a47ef38050e344b}
 
   '@emnapi/runtime@1.4.5':
     resolution: {integrity: sha512-++LApOtY0pEEz1zrd9vy1/zXVaVJJ/EbAF3u0fXIzPJEDtnITsBGbbK0EkM72amhl/R5b+5xx0Y/QhcVOpuulg==}
@@ -321,8 +321,8 @@ packages:
   '@types/node@24.3.0':
     resolution: {integrity: sha512-aPTXCrfwnDLj4VvXrm+UUCQjNEvJgNA8s5F1cvwQU+3KNltTOkBm1j30uNLyqqPNe7gE3KFzImYoZEfLhp4Yow==}
 
-  '@types/react@19.1.11':
-    resolution: {integrity: sha512-lr3jdBw/BGj49Eps7EvqlUaoeA0xpj3pc0RoJkHpYaCHkVK7i28dKyImLQb3JVlqs3aYSXf7qYuWOW/fgZnTXQ==}
+  '@types/react@19.1.12':
+    resolution: {integrity: sha512-cMoR+FoAf/Jyq6+Df2/Z41jISvGZZ2eTlnsaJRptmZ76Caldwy1odD4xTr/gNV9VLj0AWgg/nmkevIyUfIIq5w==}
 
   '@typescript-eslint/eslint-plugin@8.41.0':
     resolution: {integrity: sha512-8fz6oa6wEKZrhXWro/S3n2eRJqlRcIa6SlDh59FXJ5Wp5XRZ8B9ixpJDcjadHq47hMx0u+HW6SNa6LjJQ6NLtw==}
@@ -542,8 +542,8 @@ packages:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
 
-  dayjs@1.11.13:
-    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+  dayjs@1.11.18:
+    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
 
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
@@ -1387,7 +1387,7 @@ packages:
 
 snapshots:
 
-  '@catchball/tansaku-client@1.16.9':
+  '@catchball/tansaku-client@1.16.11':
     dependencies:
       axios: 1.11.0
     transitivePeerDependencies:
@@ -1591,7 +1591,7 @@ snapshots:
     dependencies:
       undici-types: 7.10.0
 
-  '@types/react@19.1.11':
+  '@types/react@19.1.12':
     dependencies:
       csstype: 3.1.3
 
@@ -1883,7 +1883,7 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.2
 
-  dayjs@1.11.13: {}
+  dayjs@1.11.18: {}
 
   debug@4.4.1:
     dependencies:
