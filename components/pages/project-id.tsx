@@ -168,7 +168,13 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                       padding: ".5rem",
                     }}
                   >
-                    <div style={{ fontWeight: "bold" }}>News</div>
+                    <div style={{ fontWeight: "bold" }}>
+                      {
+                        publisherCategories.find(
+                          ({ value }) => filter.sourcePublisher == value
+                        ).label
+                      }
+                    </div>
                     <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
                       {categrizedClippings[filter.sourcePublisher]?.length ??
                         clippings.length}
