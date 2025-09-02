@@ -7,10 +7,13 @@ import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
 import { PublisherCategory, snsPublisherMap } from "services/constant"
 import { Tweet } from "react-tweet"
+import { useSetAtom } from "jotai"
+import { loadingAtom } from "services/store"
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
 }) => {
+  const setLoading = useSetAtom(loadingAtom)
   const [clippings, setClippings] = useState<Clipping[]>()
   const [categrizedClippings, setCategrizedClippings] =
     useState<{ [key in PublisherCategory]: Clipping[] }>()
@@ -23,49 +26,56 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   useEffect(() => {
     const fetch = async () => {
       if (!project) return
-      const { clippings } = await api.v1.indexApiV1ClippingsGet({
-        projectId: project.id,
-        publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
-        publishDateBefore: date.add(1, "days").format("YYYY-MM-DD HH:mm:ss"),
-        statusList: [
-          "SystemAccepted",
-          "SystemDenied",
-          "SystemPending",
-          "UserAccepted",
-          "UserDenied",
-          "UserPending",
-          "UnKnownHost",
-          "Error",
-        ],
-      })
-      setClippings(clippings)
-      setCategrizedClippings({
-        news: clippings
-          .filter((c) =>
-            Object.values(snsPublisherMap)
-              .flat()
-              .every((p) => p !== c.source_publisher?.toLowerCase())
-          )
-          .toSorted((a, b) => b.score - a.score),
-        youtube: clippings
-          .filter((c) =>
-            snsPublisherMap.youtube.includes(c.source_publisher?.toLowerCase())
-          )
-          .toSorted((a, b) => b.score - a.score),
-        x: clippings
-          .filter((c) =>
-            snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
-          )
-          .toSorted((a, b) => b.score - a.score),
-        sns: clippings
-          .filter((c) =>
-            snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
-          )
-          .toSorted((a, b) => b.score - a.score),
-      })
+      try {
+        setLoading(true)
+        const { clippings } = await api.v1.indexApiV1ClippingsGet({
+          projectId: project.id,
+          publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
+          publishDateBefore: date.add(1, "days").format("YYYY-MM-DD HH:mm:ss"),
+          statusList: [
+            "SystemAccepted",
+            "SystemDenied",
+            "SystemPending",
+            "UserAccepted",
+            "UserDenied",
+            "UserPending",
+            "UnKnownHost",
+            "Error",
+          ],
+        })
+        setClippings(clippings)
+        setCategrizedClippings({
+          news: clippings
+            .filter((c) =>
+              Object.values(snsPublisherMap)
+                .flat()
+                .every((p) => p !== c.source_publisher?.toLowerCase())
+            )
+            .toSorted((a, b) => b.score - a.score),
+          youtube: clippings
+            .filter((c) =>
+              snsPublisherMap.youtube.includes(
+                c.source_publisher?.toLowerCase()
+              )
+            )
+            .toSorted((a, b) => b.score - a.score),
+          x: clippings
+            .filter((c) =>
+              snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
+            )
+            .toSorted((a, b) => b.score - a.score),
+          sns: clippings
+            .filter((c) =>
+              snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
+            )
+            .toSorted((a, b) => b.score - a.score),
+        })
+      } finally {
+        setLoading(false)
+      }
     }
     fetch()
-  }, [project, date])
+  }, [date, project, setLoading])
 
   return (
     <>

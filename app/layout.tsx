@@ -1,3 +1,4 @@
+import { Loading } from "components/commons/loading"
 import "../styles/global.css"
 
 export const metadata = {
@@ -28,6 +29,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         >
           {children}
         </main>
+        <Loading />
         <footer style={{ textAlign: "center", padding: "1rem" }}>
           <p>&copy; 2025 Cathball, Inc.</p>
         </footer>
