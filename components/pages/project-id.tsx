@@ -10,6 +10,14 @@ import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
 
+const publisherCategories: { label: string; value: PublisherCategory }[] = [
+  { label: "All", value: undefined },
+  { label: "News", value: "news" },
+  { label: "YouTube", value: "youtube" },
+  { label: "X.com", value: "x" },
+  { label: "Other SNS", value: "sns" },
+]
+
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
 }) => {
@@ -95,7 +103,12 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                   {project.name}
                 </h2>
                 <div
-                  style={{ display: "flex", gap: ".5rem", padding: ".5rem" }}
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: ".5rem",
+                    padding: ".5rem",
+                  }}
                 >
                   <select
                     onChange={(e) => setDate(dayjs(e.target.value))}
@@ -124,56 +137,19 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                         </option>
                       ))}
                   </select>
-                  <FilterButton
-                    isActive={!filter.sourcePublisher}
-                    onClick={() =>
-                      setFilter({ ...filter, sourcePublisher: undefined })
-                    }
-                  >
-                    All
-                  </FilterButton>
-                  {categrizedClippings.news.length > 0 && (
-                    <FilterButton
-                      isActive={filter.sourcePublisher === "news"}
-                      onClick={() =>
-                        setFilter({ ...filter, sourcePublisher: "news" })
-                      }
-                    >
-                      News
-                    </FilterButton>
-                  )}
-                  {categrizedClippings.youtube.length > 0 && (
-                    <FilterButton
-                      isActive={filter.sourcePublisher === "youtube"}
-                      onClick={() =>
-                        setFilter({ ...filter, sourcePublisher: "youtube" })
-                      }
-                    >
-                      YouTube
-                    </FilterButton>
-                  )}
-                  {categrizedClippings.x.length > 0 && (
-                    <FilterButton
-                      isActive={filter.sourcePublisher === "x"}
-                      onClick={() =>
-                        setFilter({ ...filter, sourcePublisher: "x" })
-                      }
-                    >
-                      X.com
-                    </FilterButton>
-                  )}
-                  {categrizedClippings.sns.length > 0 && (
-                    <FilterButton
-                      isActive={filter.sourcePublisher === "sns"}
-                      onClick={() =>
-                        setFilter({
-                          ...filter,
-                          sourcePublisher: "sns",
-                        })
-                      }
-                    >
-                      Other SNS
-                    </FilterButton>
+                  {publisherCategories.map(
+                    ({ label, value }) =>
+                      (!value || categrizedClippings[value].length > 0) && (
+                        <FilterButton
+                          key={label}
+                          isActive={filter.sourcePublisher === value}
+                          onClick={() =>
+                            setFilter({ ...filter, sourcePublisher: value })
+                          }
+                        >
+                          {label}
+                        </FilterButton>
+                      )
                   )}
                 </div>
                 <div
