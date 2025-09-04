@@ -9,6 +9,7 @@ import { PublisherCategory, snsPublisherMap } from "services/constant"
 import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
+import { groupize } from "@catchball/saku2-admin-lib"
 
 const publisherCategories: { label: string; value: PublisherCategory }[] = [
   { label: "All", value: undefined },
@@ -24,7 +25,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   const setLoading = useSetAtom(loadingAtom)
   const [clippings, setClippings] = useState<Clipping[]>()
   const [categrizedClippings, setCategrizedClippings] =
-    useState<{ [key in PublisherCategory]: Clipping[] }>()
+    useState<{ [key in PublisherCategory]: Clipping[][] }>()
   const [date, setDate] = useState<dayjs.Dayjs>(
     dayjs().startOf("day").subtract(1, "days")
   )
@@ -53,30 +54,50 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
         })
         setClippings(clippings)
         setCategrizedClippings({
-          news: clippings
-            .filter((c) =>
+          news: groupize({
+            project,
+            clippings: clippings.filter((c) =>
               Object.values(snsPublisherMap)
                 .flat()
                 .every((p) => p !== c.source_publisher?.toLowerCase())
-            )
-            .toSorted((a, b) => b.score - a.score),
-          youtube: clippings
-            .filter((c) =>
+            ),
+          }).toSorted(
+            (a, b) =>
+              b.reduce((p, c) => c.score + p, 0) -
+              a.reduce((p, c) => c.score + p, 0)
+          ),
+          youtube: groupize({
+            project,
+            clippings: clippings.filter((c) =>
               snsPublisherMap.youtube.includes(
                 c.source_publisher?.toLowerCase()
               )
-            )
-            .toSorted((a, b) => b.score - a.score),
-          x: clippings
-            .filter((c) =>
+            ),
+          }).toSorted(
+            (a, b) =>
+              b.reduce((p, c) => c.score + p, 0) -
+              a.reduce((p, c) => c.score + p, 0)
+          ),
+          x: groupize({
+            project,
+            clippings: clippings.filter((c) =>
               snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
-            )
-            .toSorted((a, b) => b.score - a.score),
-          sns: clippings
-            .filter((c) =>
+            ),
+          }).toSorted(
+            (a, b) =>
+              b.reduce((p, c) => c.score + p, 0) -
+              a.reduce((p, c) => c.score + p, 0)
+          ),
+          sns: groupize({
+            project,
+            clippings: clippings.filter((c) =>
               snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
-            )
-            .toSorted((a, b) => b.score - a.score),
+            ),
+          }).toSorted(
+            (a, b) =>
+              b.reduce((p, c) => c.score + p, 0) -
+              a.reduce((p, c) => c.score + p, 0)
+          ),
         })
       } finally {
         setLoading(false)
@@ -184,7 +205,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                   {categrizedClippings[filter.sourcePublisher || "news"]
                     .slice(0, 20)
                     .map((clipping) => (
-                      <React.Fragment key={clipping.id}>
+                      <React.Fragment key={clipping[0].id}>
                         {filter.sourcePublisher == "x" ? (
                           <div
                             className="light"
@@ -194,13 +215,13 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                             }}
                           >
                             <Tweet
-                              id={clipping.url.match(/status\/(\d+)/)?.[1]}
+                              id={clipping[0].url.match(/status\/(\d+)/)?.[1]}
                             />
                           </div>
                         ) : (
                           <a
-                            key={clipping.id}
-                            href={clipping.url}
+                            key={clipping[0].id}
+                            href={clipping[0].url}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -215,9 +236,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 fontSize: ".75rem",
                               }}
                             >
-                              {clipping.source_publisher}
-                              {clipping.category && (
-                                <>&nbsp;&gt; {clipping.category}</>
+                              {clipping[0].source_publisher}
+                              {clipping[0].category && (
+                                <>&nbsp;&gt; {clipping[0].category}</>
                               )}
                             </p>
                             <h3
@@ -231,7 +252,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 padding: 0,
                               }}
                             >
-                              {clipping.original_title ?? clipping.title}
+                              {clipping[0].original_title ?? clipping[0].title}
                             </h3>
                           </a>
                         )}
