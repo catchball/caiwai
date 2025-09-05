@@ -14,11 +14,11 @@ const groupScore = (group: Clipping[]) =>
 
 const Rank: FC<{ rank: number }> = ({ rank }) => (
   <div style={{ display: "flex", gap: ".125rem", height: ".5rem" }}>
-    {[0, 1, 2, 3].map((i) => (
+    {[0, 1, 2, 3, 4].map((i) => (
       <span
         key={i}
         style={{
-          border: `solid 0.5px ${rank >= i ? "#999" : "#ccc"}`,
+          border: `solid .75px ${rank >= i ? "#668" : "#eee"}`,
         }}
       />
     ))}
@@ -113,7 +113,7 @@ export const ProjectIdCompactPage: FC<{
                                   Math.log(
                                     groupScore(clippingGroups[value][0])
                                   )) *
-                                  3
+                                  4
                               )
                             : 0
                         }
