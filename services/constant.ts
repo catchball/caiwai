@@ -9,3 +9,17 @@ export const snsPublisherMap: {
   youtube: ["youtube"],
   sns: ["facebook", "tiktok", "instagram", "threads"],
 } as const
+
+export const publisherCategoriesWithLabel: {
+  label: string
+  value: PublisherCategory
+}[] = [
+  { label: "All", value: undefined },
+  { label: "News", value: "news" },
+  { label: "YouTube", value: "youtube" },
+  { label: "X.com", value: "x" },
+  { label: "Other SNS", value: "sns" },
+] as const
+
+export const compactPublisherCatetoriesWithLabel =
+  publisherCategoriesWithLabel.filter((c) => !!c.value)

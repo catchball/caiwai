@@ -5,19 +5,15 @@ import { FilterButton } from "components/elements/form"
 import dayjs from "dayjs"
 import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
-import { PublisherCategory, snsPublisherMap } from "services/constant"
+import {
+  publisherCategoriesWithLabel,
+  PublisherCategory,
+  snsPublisherMap,
+} from "services/constant"
 import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
 import { groupize } from "@catchball/saku2-admin-lib"
-
-const publisherCategories: { label: string; value: PublisherCategory }[] = [
-  { label: "All", value: undefined },
-  { label: "News", value: "news" },
-  { label: "YouTube", value: "youtube" },
-  { label: "X.com", value: "x" },
-  { label: "Other SNS", value: "sns" },
-]
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
@@ -158,7 +154,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                         </option>
                       ))}
                   </select>
-                  {publisherCategories.map(
+                  {publisherCategoriesWithLabel.map(
                     ({ label, value }) =>
                       (!value || categrizedClippings[value].length > 0) && (
                         <FilterButton
@@ -191,7 +187,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                   >
                     <div style={{ fontWeight: "bold" }}>
                       {
-                        publisherCategories.find(
+                        publisherCategoriesWithLabel.find(
                           ({ value }) => filter.sourcePublisher == value
                         ).label
                       }
