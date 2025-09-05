@@ -12,6 +12,19 @@ const colors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
 const groupScore = (group: Clipping[]) =>
   group.reduce((p, c) => p + c.score, 0) + group.length - 1
 
+const Rank: FC<{ rank: number }> = ({ rank }) => (
+  <div style={{ display: "flex", gap: ".125rem", height: ".5rem" }}>
+    {[0, 1, 2, 3].map((i) => (
+      <span
+        key={i}
+        style={{
+          border: `solid 0.5px ${rank >= i ? "#999" : "#ccc"}`,
+        }}
+      />
+    ))}
+  </div>
+)
+
 export const ProjectIdCompactPage: FC<{
   project: ClippingProject
   clippingGroups: {
@@ -92,17 +105,19 @@ export const ProjectIdCompactPage: FC<{
                           <>&nbsp;&gt; {clipping.category}</>
                         )}
                       </p>
-                      <div
-                        style={{
-                          fontSize: ".5rem",
-                        }}
-                      >
-                        {groupScore(clippingGroups[value][0]) > 0
-                          ? (groupScore([clipping, ...others]) /
-                              groupScore(clippingGroups[value][0])) *
-                            100
-                          : 0}
-                      </div>
+                      <Rank
+                        rank={
+                          groupScore(clippingGroups[value][0]) > 0
+                            ? Math.ceil(
+                                (Math.log(groupScore([clipping, ...others])) /
+                                  Math.log(
+                                    groupScore(clippingGroups[value][0])
+                                  )) *
+                                  3
+                              )
+                            : 0
+                        }
+                      />
                     </div>
                     <h3
                       style={{
