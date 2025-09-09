@@ -1,24 +1,38 @@
 import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
+import dayjs from "dayjs"
 import { FC, Fragment } from "react"
 import { compactPublisherCatetoriesWithLabel } from "services/constant"
 
 const colors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
-  news: "#777",
+  news: "#495057",
   youtube: "#c4302b",
   x: "#111",
   sns: "#d97706",
+}
+
+const lightColors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
+  news: "#eef2f6",
+  youtube: "#ffebee",
+  x: "#eef2f6",
+  sns: "#fff3e0",
 }
 
 const groupScore = (group: Clipping[]) =>
   group.reduce((p, c) => p + c.score, 0) + group.length - 1
 
 const Rank: FC<{ rank: number }> = ({ rank }) => (
-  <div style={{ display: "flex", gap: ".125rem", height: ".5rem" }}>
+  <div
+    style={{
+      display: "flex",
+      gap: ".06125rem",
+      height: ".5rem",
+    }}
+  >
     {[0, 1, 2, 3, 4].map((i) => (
       <span
         key={i}
         style={{
-          border: `solid .75px ${rank >= i ? "#668" : "#eee"}`,
+          border: `solid .75px ${rank >= i ? "#668" : "#ddd"}`,
         }}
       />
     ))}
@@ -35,15 +49,22 @@ export const ProjectIdCompactPage: FC<{
   }
 }> = ({ project, clippingGroups }) => {
   return (
-    <div>
+    <div
+      style={{
+        alignItems: "center",
+        display: "flex",
+        flexFlow: "column",
+      }}
+    >
       <h2
         style={{
           fontSize: "1rem",
+          fontWeight: "normal",
           padding: ".75rem",
           textAlign: "center",
         }}
       >
-        {project.name}
+        {project.name} Caiwai [{dayjs().subtract(1, "day").format("M/D")}]
       </h2>
       <div
         style={{
@@ -51,6 +72,7 @@ export const ProjectIdCompactPage: FC<{
           display: "flex",
           flexDirection: "column",
           gap: ".15rem",
+          maxWidth: "36rem",
         }}
       >
         {compactPublisherCatetoriesWithLabel
@@ -59,17 +81,18 @@ export const ProjectIdCompactPage: FC<{
             <Fragment key={value}>
               <div
                 style={{
+                  background: lightColors[value],
                   borderLeft: `solid 3px ${colors[value]}`,
                   display: "flex",
                   justifyContent: "space-between",
-                  padding: ".5rem",
+                  padding: ".25rem .75rem",
                 }}
               >
-                <div style={{ color: colors[value], fontWeight: "bold" }}>
+                <div style={{ color: colors[value], fontWeight: "bolder" }}>
                   {label}
                 </div>
                 <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
-                  {clippingGroups[value].length} 件
+                  {clippingGroups[value].length}件
                 </div>
               </div>
               {clippingGroups[value]
@@ -84,9 +107,9 @@ export const ProjectIdCompactPage: FC<{
                       background: "#f8f9fa",
                       display: "flex",
                       flexDirection: "column",
-                      gap: ".25rem",
+                      gap: ".125rem",
                       textDecoration: "none",
-                      padding: "0.5rem",
+                      padding: ".25rem .75rem",
                     }}
                   >
                     <div
@@ -97,6 +120,7 @@ export const ProjectIdCompactPage: FC<{
                     >
                       <p
                         style={{
+                          color: "#888",
                           fontSize: ".75rem",
                         }}
                       >
@@ -109,9 +133,11 @@ export const ProjectIdCompactPage: FC<{
                         rank={
                           groupScore(clippingGroups[value][0]) > 0
                             ? Math.ceil(
-                                (Math.log(groupScore([clipping, ...others])) /
+                                (Math.log(
+                                  groupScore([clipping, ...others]) + 1
+                                ) /
                                   Math.log(
-                                    groupScore(clippingGroups[value][0])
+                                    groupScore(clippingGroups[value][0]) + 1
                                   )) *
                                   4
                               )
@@ -121,12 +147,12 @@ export const ProjectIdCompactPage: FC<{
                     </div>
                     <h3
                       style={{
-                        color: "#66c",
+                        color: "#07f",
                         fontSize: ".875rem",
                         fontWeight: "normal",
                         lineHeight: 1,
                         margin: 0,
-                        maxHeight: "1.75rem",
+                        maxHeight: ".875rem",
                         overflow: "hidden",
                         padding: 0,
                       }}
