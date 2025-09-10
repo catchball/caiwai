@@ -42,9 +42,9 @@ export const publisherCategoriesWithLabel: {
 }[] = [
   { label: "All", value: undefined },
   { label: "News", value: "news" },
-  { label: "X.com", value: "x" },
+  { label: "X", value: "x" },
   { label: "YouTube", value: "youtube" },
-  { label: "Other", value: "sns" },
+  { label: "Others", value: "sns" },
 ] as const
 
 export const compactPublisherCatetoriesWithLabel =

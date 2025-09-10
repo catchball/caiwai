@@ -25,7 +25,8 @@ const Rank: FC<{ rank: number }> = ({ rank }) => (
     style={{
       display: "flex",
       gap: ".06125rem",
-      height: ".5rem",
+      height: ".375rem",
+      marginTop: ".125rem",
     }}
   >
     {[0, 1, 2, 3, 4].map((i) => (
@@ -58,13 +59,16 @@ export const ProjectIdCompactPage: FC<{
     >
       <h2
         style={{
+          color: "#444",
           fontSize: "1rem",
           fontWeight: "normal",
-          padding: ".75rem",
+          padding: ".5rem",
           textAlign: "center",
         }}
       >
-        {project.name} Caiwai [{dayjs().subtract(1, "day").format("M/D")}]
+        {project.name} Caiwai&nbsp;[{dayjs().subtract(1, "day").format("M/D")}
+        ]&nbsp;
+        {Object.values(clippingGroups).reduce((p, c) => p + c.length, 0)}件
       </h2>
       <div
         style={{
@@ -91,7 +95,13 @@ export const ProjectIdCompactPage: FC<{
                 <div style={{ color: colors[value], fontWeight: "bolder" }}>
                   {label}
                 </div>
-                <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
+                <div
+                  style={{
+                    color: colors[value],
+                    fontSize: ".75rem",
+                    lineHeight: 2,
+                  }}
+                >
                   {clippingGroups[value].length}件
                 </div>
               </div>
@@ -109,7 +119,7 @@ export const ProjectIdCompactPage: FC<{
                       flexDirection: "column",
                       gap: ".125rem",
                       textDecoration: "none",
-                      padding: ".25rem .75rem",
+                      padding: ".125rem .75rem",
                     }}
                   >
                     <div
