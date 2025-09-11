@@ -1,14 +1,10 @@
 import { groupize } from "@catchball/saku2-admin-lib/dist"
-import { Clipping } from "@catchball/tansaku-client/lib"
 import { ProjectIdCompactPage } from "components/pages/project-id-compact"
 import dayjs from "dayjs"
 import { FC, use } from "react"
 import { api } from "services/api"
 import { snsPublisherMap } from "services/constant"
-
-const clippingSortFunc = (a: Clipping[], b: Clipping[]) =>
-  b.reduce((p, c) => c.score + p, b.length) -
-  a.reduce((p, c) => c.score + p, a.length)
+import { clippingGroupSortFunc } from "services/group"
 
 const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
   const { id } = use(params)
@@ -35,25 +31,25 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
           .flat()
           .every((p) => p !== c.source_publisher?.toLowerCase())
       ),
-    }).toSorted(clippingSortFunc),
+    }).toSorted(clippingGroupSortFunc),
     youtube: groupize({
       project,
       clippings: clippings.filter((c) =>
         snsPublisherMap.youtube.includes(c.source_publisher?.toLowerCase())
       ),
-    }).toSorted(clippingSortFunc),
+    }).toSorted(clippingGroupSortFunc),
     x: groupize({
       project,
       clippings: clippings.filter((c) =>
         snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
       ),
-    }).toSorted(clippingSortFunc),
+    }).toSorted(clippingGroupSortFunc),
     sns: groupize({
       project,
       clippings: clippings.filter((c) =>
         snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
       ),
-    }).toSorted(clippingSortFunc),
+    }).toSorted(clippingGroupSortFunc),
   }
 
   return <ProjectIdCompactPage project={project} clippingGroups={categorized} />

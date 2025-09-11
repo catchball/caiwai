@@ -2,6 +2,7 @@ import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
 import dayjs from "dayjs"
 import { FC, Fragment } from "react"
 import { compactPublisherCatetoriesWithLabel } from "services/constant"
+import { groupScore } from "services/group"
 
 const colors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
   news: "#495057",
@@ -16,9 +17,6 @@ const lightColors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
   x: "#eef2f6",
   sns: "#fff3e0",
 }
-
-const groupScore = (group: Clipping[]) =>
-  group.reduce((p, c) => p + c.score, 0) + group.length - 1
 
 const Rank: FC<{ rank: number }> = ({ rank }) => (
   <div

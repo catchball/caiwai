@@ -14,12 +14,13 @@ import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
 import { groupize } from "@catchball/saku2-admin-lib"
+import { clippingGroupSortFunc } from "services/group"
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
 }) => {
   const setLoading = useSetAtom(loadingAtom)
-  const [clippings, setClippings] = useState<Clipping[]>()
+  const [clippings, setClippings] = useState<Clipping[][]>()
   const [categrizedClippings, setCategrizedClippings] =
     useState<{ [key in PublisherCategory]: Clipping[][] }>()
   const [date, setDate] = useState<dayjs.Dayjs>(
@@ -48,7 +49,10 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
             "Error",
           ],
         })
-        setClippings(clippings)
+
+        setClippings(
+          groupize({ clippings, project }).toSorted(clippingGroupSortFunc)
+        )
         setCategrizedClippings({
           news: groupize({
             project,
@@ -57,11 +61,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                 .flat()
                 .every((p) => p !== c.source_publisher?.toLowerCase())
             ),
-          }).toSorted(
-            (a, b) =>
-              b.reduce((p, c) => c.score + p, 0) -
-              a.reduce((p, c) => c.score + p, 0)
-          ),
+          }).toSorted(clippingGroupSortFunc),
           youtube: groupize({
             project,
             clippings: clippings.filter((c) =>
@@ -69,31 +69,19 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                 c.source_publisher?.toLowerCase()
               )
             ),
-          }).toSorted(
-            (a, b) =>
-              b.reduce((p, c) => c.score + p, 0) -
-              a.reduce((p, c) => c.score + p, 0)
-          ),
+          }).toSorted(clippingGroupSortFunc),
           x: groupize({
             project,
             clippings: clippings.filter((c) =>
               snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
             ),
-          }).toSorted(
-            (a, b) =>
-              b.reduce((p, c) => c.score + p, 0) -
-              a.reduce((p, c) => c.score + p, 0)
-          ),
+          }).toSorted(clippingGroupSortFunc),
           sns: groupize({
             project,
             clippings: clippings.filter((c) =>
               snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
             ),
-          }).toSorted(
-            (a, b) =>
-              b.reduce((p, c) => c.score + p, 0) -
-              a.reduce((p, c) => c.score + p, 0)
-          ),
+          }).toSorted(clippingGroupSortFunc),
         })
       } finally {
         setLoading(false)
@@ -102,12 +90,16 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
     fetch()
   }, [date, project, setLoading])
 
+  const selectedClippings = filter.sourcePublisher
+    ? categrizedClippings[filter.sourcePublisher]
+    : clippings
+
   return (
     <>
       {project ? (
         <>
           <div>
-            {clippings && (
+            {categrizedClippings && (
               <>
                 <h2
                   style={{
@@ -136,7 +128,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                       padding: ".5rem",
                     }}
                   >
-                    {Array(3)
+                    {Array(14)
                       .fill(null)
                       .map((_, i) => (
                         <option
@@ -193,67 +185,63 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                       }
                     </div>
                     <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
-                      {categrizedClippings[filter.sourcePublisher]?.length ??
-                        clippings.length}
-                      件
+                      {selectedClippings.length}件
                     </div>
                   </div>
-                  {categrizedClippings[filter.sourcePublisher || "news"]
-                    .slice(0, 20)
-                    .map((clipping) => (
-                      <React.Fragment key={clipping[0].id}>
-                        {filter.sourcePublisher == "x" ? (
-                          <div
-                            className="light"
+                  {selectedClippings.slice(0, 200).map((clipping) => (
+                    <React.Fragment key={clipping[0].id}>
+                      {filter.sourcePublisher == "x" ? (
+                        <div
+                          className="light"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Tweet
+                            id={clipping[0].url.match(/status\/(\d+)/)?.[1]}
+                          />
+                        </div>
+                      ) : (
+                        <a
+                          key={clipping[0].id}
+                          href={clipping[0].url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            background: "#f8f9fa",
+                            display: "block",
+                            textDecoration: "none",
+                            padding: "0.5rem",
+                          }}
+                        >
+                          <p
                             style={{
-                              display: "flex",
-                              justifyContent: "center",
+                              fontSize: ".75rem",
                             }}
                           >
-                            <Tweet
-                              id={clipping[0].url.match(/status\/(\d+)/)?.[1]}
-                            />
-                          </div>
-                        ) : (
-                          <a
-                            key={clipping[0].id}
-                            href={clipping[0].url}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            {clipping[0].source_publisher}
+                            {clipping[0].category && (
+                              <>&nbsp;&gt; {clipping[0].category}</>
+                            )}
+                          </p>
+                          <h3
                             style={{
-                              background: "#f8f9fa",
-                              display: "block",
-                              textDecoration: "none",
-                              padding: "0.5rem",
+                              color: "#66c",
+                              fontSize: ".8rem",
+                              fontWeight: "normal",
+                              height: "1.2rem",
+                              margin: 0,
+                              overflow: "hidden",
+                              padding: 0,
                             }}
                           >
-                            <p
-                              style={{
-                                fontSize: ".75rem",
-                              }}
-                            >
-                              {clipping[0].source_publisher}
-                              {clipping[0].category && (
-                                <>&nbsp;&gt; {clipping[0].category}</>
-                              )}
-                            </p>
-                            <h3
-                              style={{
-                                color: "#66c",
-                                fontSize: ".8rem",
-                                fontWeight: "normal",
-                                height: "1.2rem",
-                                margin: 0,
-                                overflow: "hidden",
-                                padding: 0,
-                              }}
-                            >
-                              {clipping[0].original_title ?? clipping[0].title}
-                            </h3>
-                          </a>
-                        )}
-                      </React.Fragment>
-                    ))}
+                            {clipping[0].original_title ?? clipping[0].title}
+                          </h3>
+                        </a>
+                      )}
+                    </React.Fragment>
+                  ))}
                 </div>
               </>
             )}
