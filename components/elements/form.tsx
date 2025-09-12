@@ -19,3 +19,11 @@ export const FilterButton: FC<
     ></button>
   )
 }
+
+export const Input: FC<ComponentProps<"input">> = ({ style, ...props }) => {
+  return <input style={{ ...style }} {...props} />
+}
+
+export const Button: FC<ComponentProps<"button">> = ({ style, ...props }) => {
+  return <button style={{ ...style }} {...props} />
+}
