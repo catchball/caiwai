@@ -41,9 +41,20 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
       {isAuthenticated ? (
         <section {...props} />
       ) : (
-        <section>
-          <p>非公開ページです。アクセスするにはパスワードを入力してください</p>
-          <form onSubmit={handleClick}>
+        <section style={{ margin: "auto", maxWidth: "28rem", padding: "1rem" }}>
+          <h3 style={{ textAlign: "center" }}>非公開ページ</h3>
+          <p style={{ textAlign: "center" }}>
+            アクセスするにはパスワードを入力してください
+          </p>
+          <form
+            onSubmit={handleClick}
+            style={{
+              display: "flex",
+              flexFlow: "column",
+              gap: "1rem",
+              padding: "1rem",
+            }}
+          >
             <Input
               type="password"
               value={password}

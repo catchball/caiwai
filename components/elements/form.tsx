@@ -21,9 +21,22 @@ export const FilterButton: FC<
 }
 
 export const Input: FC<ComponentProps<"input">> = ({ style, ...props }) => {
-  return <input style={{ ...style }} {...props} />
+  return (
+    <input style={{ border: "none", padding: ".25rem", ...style }} {...props} />
+  )
 }
 
 export const Button: FC<ComponentProps<"button">> = ({ style, ...props }) => {
-  return <button style={{ ...style }} {...props} />
+  return (
+    <button
+      style={{
+        background: "#444",
+        color: "#eee",
+        border: "none",
+        padding: ".25rem .5rem",
+        ...style,
+      }}
+      {...props}
+    />
+  )
 }
