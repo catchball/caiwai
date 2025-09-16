@@ -33,6 +33,13 @@ export const snsPublisherMap: {
     "lips",
     "holiday",
     "motiongallery",
+    "楽天ブログ",
+    "ameblo",
+    "note",
+    "Yahoo!ニュース エキスパート",
+    "Zenn",
+    "gooブログ",
+    "ライブドアブログ",
   ],
 } as const
 
