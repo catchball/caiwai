@@ -1,4 +1,7 @@
-import { groupize } from "@catchball/saku2-admin-lib/dist"
+import {
+  ExportActiveClippingStatusList,
+  groupize,
+} from "@catchball/saku2-admin-lib/dist"
 import { ProjectIdCompactPage } from "components/pages/project-id-compact"
 import dayjs from "dayjs"
 import { FC, use } from "react"
@@ -21,6 +24,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
         .subtract(1, "days")
         .format("YYYY-MM-DD HH:mm:ss"),
       publishDateBefore: dayjs().startOf("day").format("YYYY-MM-DD HH:mm:ss"),
+      statusList: ExportActiveClippingStatusList,
     })
   )
   const categorized = {
