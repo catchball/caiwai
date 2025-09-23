@@ -3,6 +3,11 @@ import dayjs from "dayjs"
 import { FC, Fragment } from "react"
 import { compactPublisherCatetoriesWithLabel } from "services/constant"
 import { groupScore } from "services/group"
+import timezone from "dayjs/plugin/timezone"
+import utc from "dayjs/plugin/utc"
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const colors: { [key in "news" | "youtube" | "x" | "sns"]: string } = {
   news: "#495057",
@@ -47,7 +52,7 @@ export const ProjectIdCompactPage: FC<{
     sns: Clipping[][]
   }
 }> = ({ project, clippingGroups }) => {
-  const day = dayjs().subtract(1, "day")
+  const day = dayjs().tz("Asia/Tokyo").subtract(1, "day")
   return (
     <div
       style={{
