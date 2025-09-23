@@ -111,7 +111,17 @@ export const ProjectIdCompactPage: FC<{
               </div>
               {clippingGroups[value]
                 .slice(0, value == "news" ? 10 : 5)
-                .map(([clipping, ...others]) => (
+                .map((clippings) => ({
+                  clipping:
+                    clippings.find(
+                      (clipping) => clipping.source_publisher == "共同通信"
+                    ) ??
+                    clippings.find((c) => c.is_primary) ??
+                    clippings.find((c) => c.publisher == "NEWSjp") ??
+                    clippings[0],
+                  clippings,
+                }))
+                .map(({ clipping, clippings }) => (
                   <a
                     key={clipping.id}
                     href={clipping.url}
@@ -148,7 +158,7 @@ export const ProjectIdCompactPage: FC<{
                           groupScore(clippingGroups[value][0]) > 0
                             ? Math.ceil(
                                 (Math.log(
-                                  groupScore([clipping, ...others]) + 1
+                                  groupScore([clipping, ...clippings]) + 1
                                 ) /
                                   Math.log(
                                     groupScore(clippingGroups[value][0]) + 1
