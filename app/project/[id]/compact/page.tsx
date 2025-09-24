@@ -43,8 +43,8 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
       ),
     }).toSorted(
       (c1, c2) =>
-        c1[0].publisher_information.subscriber_count -
-        c2[0].publisher_information.subscriber_count
+        c2[0].publisher_information.subscriber_count -
+        c1[0].publisher_information.subscriber_count
     ),
     x: groupize({
       project,
