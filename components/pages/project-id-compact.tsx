@@ -81,6 +81,7 @@ export const ProjectIdCompactPage: FC<{
           flexDirection: "column",
           gap: ".15rem",
           maxWidth: "36rem",
+          width: "100%",
         }}
       >
         {compactPublisherCatetoriesWithLabel
