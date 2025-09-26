@@ -134,7 +134,7 @@ export const ProjectIdCompactPage: FC<{
                       flexDirection: "column",
                       gap: ".125rem",
                       textDecoration: "none",
-                      padding: ".125rem .75rem",
+                      padding: ".25rem .75rem",
                     }}
                   >
                     <div
@@ -173,11 +173,11 @@ export const ProjectIdCompactPage: FC<{
                     <h3
                       style={{
                         color: "#07f",
-                        fontSize: ".875rem",
+                        fontSize: ".75rem",
                         fontWeight: "normal",
-                        lineHeight: 1,
+                        lineHeight: 1.5,
                         margin: 0,
-                        maxHeight: ".875rem",
+                        maxHeight: "1rem",
                         overflow: "hidden",
                         padding: 0,
                       }}
