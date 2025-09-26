@@ -16,7 +16,7 @@ const PRIVATE_PASSWORD =
 
 export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
   const [password, setPassword] = useState<string>("")
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
   const handleClick = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (await checkPassword(password)) {
@@ -38,7 +38,7 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
   }, [])
   return (
     <>
-      {isAuthenticated ? (
+      {isAuthenticated == undefined ? null : isAuthenticated ? (
         <section {...props} />
       ) : (
         <section style={{ margin: "auto", maxWidth: "28rem", padding: "1rem" }}>
