@@ -38,11 +38,18 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
       try {
         setLoading(true)
 
-        const { clippings } = await api.v1.indexApiV1ClippingsGet({
-          projectId: project.id,
-          publishDate: date.subtract(1, "days").format("YYYY-MM-DD HH:mm:ss"),
-          publishDateBefore: date.startOf("day").format("YYYY-MM-DD HH:mm:ss"),
-          statusList: ExportActiveClippingStatusList,
+        const { clippings: clippingIndexes } =
+          await api.v1.indexApiV1ClippingsGet({
+            projectId: project.id,
+            publishDate: date.subtract(1, "days").format("YYYY-MM-DD HH:mm:ss"),
+            publishDateBefore: date
+              .startOf("day")
+              .format("YYYY-MM-DD HH:mm:ss"),
+            statusList: ExportActiveClippingStatusList,
+          })
+
+        const { clippings } = await api.v1.selectApiV1ClippingsSelectPost({
+          requestBody: { ids: clippingIndexes.map((c) => c.id) },
         })
 
         setClippings(
@@ -246,7 +253,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 clipping[0].original_title ?? clipping[0].title
                               ).slice(0, 80)}
                             </h3>
-                            <p>{clipping[0].body.slice(0, 200)}</p>
+                            <p style={{ color: "#999", fontSize: ".625rem" }}>
+                              {clipping[0].body.slice(0, 100)}
+                            </p>
                           </div>
                           {clipping.some((c) => !!c.thumbnail_url) && (
                             <div>
