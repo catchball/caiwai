@@ -242,20 +242,24 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 padding: 0,
                               }}
                             >
-                              {clipping[0].original_title ?? clipping[0].title}
+                              {(
+                                clipping[0].original_title ?? clipping[0].title
+                              ).slice(0, 80)}
                             </h3>
                             <p>{clipping[0].body.slice(0, 200)}</p>
                           </div>
-                          <div>
-                            <figure
-                              style={{
-                                backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
-                                backgroundSize: "cover",
-                                width: "8rem",
-                                height: "6rem",
-                              }}
-                            ></figure>
-                          </div>
+                          {clipping.some((c) => !!c.thumbnail_url) && (
+                            <div>
+                              <figure
+                                style={{
+                                  backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
+                                  backgroundSize: "cover",
+                                  width: "8rem",
+                                  height: "6rem",
+                                }}
+                              ></figure>
+                            </div>
+                          )}
                         </a>
                       )}
                     </React.Fragment>
