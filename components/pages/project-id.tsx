@@ -226,6 +226,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                               display: "flex",
                               flexFlow: "column",
                               gap: ".25rem",
+                              minWidth: 0,
                               position: "relative",
                             }}
                           >
