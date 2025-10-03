@@ -24,7 +24,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <main
           style={{
             margin: "auto",
-            maxWidth: "48rem",
+            maxWidth: "64rem",
           }}
         >
           {children}

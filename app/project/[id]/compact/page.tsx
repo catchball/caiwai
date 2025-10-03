@@ -60,7 +60,16 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
     }).toSorted(clippingGroupSortFunc),
   }
 
-  return <ProjectIdCompactPage project={project} clippingGroups={categorized} />
+  return (
+    <>
+      <ProjectIdCompactPage project={project} clippingGroups={categorized} />
+      <style>{`
+        body {
+          background: linear-gradient(135deg, #7dd3fc 0%, #f0f8ff 100%);
+        }
+      `}</style>
+    </>
+  )
 }
 
 export default Page

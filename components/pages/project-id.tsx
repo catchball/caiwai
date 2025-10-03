@@ -13,7 +13,10 @@ import {
 import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
-import { groupize } from "@catchball/saku2-admin-lib"
+import {
+  ExportActiveClippingStatusList,
+  groupize,
+} from "@catchball/saku2-admin-lib"
 import { clippingGroupSortFunc } from "services/group"
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
@@ -34,20 +37,12 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
       if (!project) return
       try {
         setLoading(true)
+
         const { clippings } = await api.v1.indexApiV1ClippingsGet({
           projectId: project.id,
-          publishDate: date.subtract(1, "day").format("YYYY-MM-DD HH:mm:ss"),
-          publishDateBefore: date.format("YYYY-MM-DD HH:mm:ss"),
-          statusList: [
-            "SystemAccepted",
-            "SystemDenied",
-            "SystemPending",
-            "UserAccepted",
-            "UserDenied",
-            "UserPending",
-            "UnKnownHost",
-            "Error",
-          ],
+          publishDate: date.subtract(1, "days").format("YYYY-MM-DD HH:mm:ss"),
+          publishDateBefore: date.startOf("day").format("YYYY-MM-DD HH:mm:ss"),
+          statusList: ExportActiveClippingStatusList,
         })
 
         setClippings(
@@ -103,10 +98,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
               <>
                 <h2
                   style={{
-                    fontSize: "1rem",
+                    fontSize: "3rem",
                     margin: "0",
                     padding: "0.5rem",
-                    textAlign: "center",
                   }}
                 >
                   {project.name}
@@ -161,33 +155,32 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                       )
                   )}
                 </div>
+
                 <div
                   style={{
-                    background: "#eef2f6",
+                    borderLeft: "solid 2px #777",
                     display: "flex",
-                    flexDirection: "column",
-                    gap: ".15rem",
+                    justifyContent: "space-between",
+                    padding: ".5rem",
                   }}
                 >
-                  <div
-                    style={{
-                      borderLeft: "solid 2px #777",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: ".5rem",
-                    }}
-                  >
-                    <div style={{ fontWeight: "bold" }}>
-                      {
-                        publisherCategoriesWithLabel.find(
-                          ({ value }) => filter.sourcePublisher == value
-                        ).label
-                      }
-                    </div>
-                    <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
-                      {selectedClippings.length}件
-                    </div>
+                  <div style={{ fontWeight: "bold" }}>
+                    {
+                      publisherCategoriesWithLabel.find(
+                        ({ value }) => filter.sourcePublisher == value
+                      ).label
+                    }
                   </div>
+                  <div style={{ fontSize: ".75rem", lineHeight: 2 }}>
+                    {selectedClippings.length}件
+                  </div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                  }}
+                >
                   {selectedClippings.slice(0, 200).map((clipping) => (
                     <React.Fragment key={clipping[0].id}>
                       {filter.sourcePublisher == "x" ? (
@@ -210,34 +203,59 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                           rel="noopener noreferrer"
                           style={{
                             background: "#f8f9fa",
-                            display: "block",
+                            borderBottom: "solid 1px #ddd",
+                            display: "flex",
+                            gap: "1rem",
+                            justifyContent: "space-between",
+                            maxWidth: "32rem",
+                            minWidth: "16rem",
+                            padding: "1rem",
                             textDecoration: "none",
-                            padding: "0.5rem",
+                            width: "100%",
                           }}
                         >
-                          <p
+                          <div
                             style={{
-                              fontSize: ".75rem",
+                              display: "flex",
+                              flexFlow: "column",
+                              gap: ".25rem",
+                              position: "relative",
                             }}
                           >
-                            {clipping[0].source_publisher}
-                            {clipping[0].category && (
-                              <>&nbsp;&gt; {clipping[0].category}</>
-                            )}
-                          </p>
-                          <h3
-                            style={{
-                              color: "#66c",
-                              fontSize: ".8rem",
-                              fontWeight: "normal",
-                              height: "1.2rem",
-                              margin: 0,
-                              overflow: "hidden",
-                              padding: 0,
-                            }}
-                          >
-                            {clipping[0].original_title ?? clipping[0].title}
-                          </h3>
+                            <p
+                              style={{
+                                fontSize: ".625rem",
+                              }}
+                            >
+                              {clipping[0].source_publisher}
+                              {clipping[0].category && (
+                                <>&nbsp;&gt; {clipping[0].category}</>
+                              )}
+                            </p>
+                            <h3
+                              style={{
+                                color: "#66c",
+                                fontSize: "1rem",
+                                fontWeight: "normal",
+                                margin: 0,
+                                overflow: "hidden",
+                                padding: 0,
+                              }}
+                            >
+                              {clipping[0].original_title ?? clipping[0].title}
+                            </h3>
+                            <p>{clipping[0].body.slice(0, 200)}</p>
+                          </div>
+                          <div>
+                            <figure
+                              style={{
+                                backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
+                                backgroundSize: "cover",
+                                width: "8rem",
+                                height: "6rem",
+                              }}
+                            ></figure>
+                          </div>
                         </a>
                       )}
                     </React.Fragment>

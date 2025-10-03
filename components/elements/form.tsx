@@ -7,11 +7,12 @@ export const FilterButton: FC<
     <button
       {...props}
       style={{
-        background: "#f9f9f9",
+        background: isActive ? "#444" : "#f9f9f9",
         border: "none",
         borderRadius: "1rem",
+        color: isActive ? "#eee" : "#444",
         cursor: "pointer",
-        outline: isActive ? "dotted 2px #999" : "none",
+        outline: "none",
         outlineOffset: "-3px",
         padding: ".5rem .75rem",
         ...style,
