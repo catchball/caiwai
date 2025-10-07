@@ -16,7 +16,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.18.1",
   "dependencies": {
-    "@catchball/saku2-admin-lib": "^0.1.2",
+    "@catchball/saku2-admin-lib": "^0.1.3",
     "@catchball/tansaku-client": "^1.16.18",
     "dayjs": "^1.11.18",
     "jotai": "^2.15.0",
