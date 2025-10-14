@@ -246,6 +246,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 fontSize: "1rem",
                                 fontWeight: "normal",
                                 margin: 0,
+                                maxHeight: "3rem",
                                 overflow: "hidden",
                                 padding: 0,
                               }}
