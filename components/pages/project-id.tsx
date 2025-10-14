@@ -209,7 +209,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
-                            background: "#f8f9fa",
+                            background: clipping.some((c) => c.is_main_content)
+                              ? "#f3f3fc"
+                              : "#f6f6f9",
                             borderBottom: "solid 1px #ddd",
                             display: "flex",
                             gap: "1rem",
@@ -235,6 +237,18 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 fontSize: ".625rem",
                               }}
                             >
+                              {clipping.length > 1 && (
+                                <>
+                                  <span
+                                    style={{
+                                      color: "#666",
+                                    }}
+                                  >
+                                    {clipping.length}+
+                                  </span>
+                                  &nbsp;
+                                </>
+                              )}
                               {clipping[0].source_publisher}
                               {clipping[0].category && (
                                 <>&nbsp;&gt; {clipping[0].category}</>
