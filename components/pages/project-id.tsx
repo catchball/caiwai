@@ -239,6 +239,10 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 fontSize: ".625rem",
                               }}
                             >
+                              {clipping[0].source_publisher}
+                              {clipping[0].category && (
+                                <>&nbsp;&gt; {clipping[0].category}</>
+                              )}
                               {clipping.length > 1 && (
                                 <>
                                   <span
@@ -246,14 +250,11 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                       color: "#666",
                                     }}
                                   >
+                                    &nbsp;
                                     {clipping.length}+
                                   </span>
                                   &nbsp;
                                 </>
-                              )}
-                              {clipping[0].source_publisher}
-                              {clipping[0].category && (
-                                <>&nbsp;&gt; {clipping[0].category}</>
                               )}
                             </p>
                             <h3
@@ -271,7 +272,14 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                 clipping[0].original_title ?? clipping[0].title
                               ).slice(0, 80)}
                             </h3>
-                            <p style={{ color: "#999", fontSize: ".625rem" }}>
+                            <p
+                              style={{
+                                color: "#999",
+                                fontSize: ".625rem",
+                                maxHeight: "1.875rem",
+                                overflow: "hidden",
+                              }}
+                            >
                               {clipping[0].body.slice(0, 100)}
                             </p>
                           </div>
