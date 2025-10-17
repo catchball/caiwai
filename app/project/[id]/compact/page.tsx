@@ -1,6 +1,7 @@
 import {
   ExportActiveClippingStatusList,
   groupize,
+  filterExportClippingGroup,
 } from "@catchball/saku2-admin-lib/dist"
 import { ProjectIdCompactPage } from "components/pages/project-id-compact"
 import dayjs from "dayjs"
@@ -28,36 +29,44 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
     })
   )
   const categorized = {
-    news: groupize({
-      project,
-      clippings: clippings.filter((c) =>
-        Object.values(snsPublisherMap)
-          .flat()
-          .every((p) => p !== c.source_publisher?.toLowerCase())
-      ),
-    }).toSorted(clippingGroupSortFunc),
-    youtube: groupize({
-      project,
-      clippings: clippings.filter((c) =>
-        snsPublisherMap.youtube.includes(c.source_publisher?.toLowerCase())
-      ),
-    }).toSorted(
+    news: filterExportClippingGroup(
+      groupize({
+        project,
+        clippings: clippings.filter((c) =>
+          Object.values(snsPublisherMap)
+            .flat()
+            .every((p) => p !== c.source_publisher?.toLowerCase())
+        ),
+      })
+    ).toSorted(clippingGroupSortFunc),
+    youtube: filterExportClippingGroup(
+      groupize({
+        project,
+        clippings: clippings.filter((c) =>
+          snsPublisherMap.youtube.includes(c.source_publisher?.toLowerCase())
+        ),
+      })
+    ).toSorted(
       (c1, c2) =>
         c2[0].publisher_information?.subscriber_count -
         c1[0].publisher_information?.subscriber_count
     ),
-    x: groupize({
-      project,
-      clippings: clippings.filter((c) =>
-        snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
-      ),
-    }).toSorted(clippingGroupSortFunc),
-    sns: groupize({
-      project,
-      clippings: clippings.filter((c) =>
-        snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
-      ),
-    }).toSorted(clippingGroupSortFunc),
+    x: filterExportClippingGroup(
+      groupize({
+        project,
+        clippings: clippings.filter((c) =>
+          snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
+        ),
+      })
+    ).toSorted(clippingGroupSortFunc),
+    sns: filterExportClippingGroup(
+      groupize({
+        project,
+        clippings: clippings.filter((c) =>
+          snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
+        ),
+      })
+    ).toSorted(clippingGroupSortFunc),
   }
 
   return (

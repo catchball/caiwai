@@ -16,8 +16,12 @@ import { loadingAtom } from "services/store"
 import {
   ExportActiveClippingStatusList,
   groupize,
+  filterExportClippingGroup,
 } from "@catchball/saku2-admin-lib"
 import { clippingGroupSortFunc } from "services/group"
+
+const g = (props: { clippings: Clipping[]; project: ClippingProject }) =>
+  filterExportClippingGroup(groupize(props))
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
@@ -52,11 +56,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
           requestBody: { ids: clippingIndexes.map((c) => c.id) },
         })
 
-        setClippings(
-          groupize({ clippings, project }).toSorted(clippingGroupSortFunc)
-        )
+        setClippings(g({ clippings, project }).toSorted(clippingGroupSortFunc))
         setCategrizedClippings({
-          news: groupize({
+          news: g({
             project,
             clippings: clippings.filter((c) =>
               Object.values(snsPublisherMap)
@@ -64,7 +66,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                 .every((p) => p !== c.source_publisher?.toLowerCase())
             ),
           }).toSorted(clippingGroupSortFunc),
-          youtube: groupize({
+          youtube: g({
             project,
             clippings: clippings.filter((c) =>
               snsPublisherMap.youtube.includes(
@@ -72,13 +74,13 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
               )
             ),
           }).toSorted(clippingGroupSortFunc),
-          x: groupize({
+          x: g({
             project,
             clippings: clippings.filter((c) =>
               snsPublisherMap.x.includes(c.source_publisher?.toLowerCase())
             ),
           }).toSorted(clippingGroupSortFunc),
-          sns: groupize({
+          sns: g({
             project,
             clippings: clippings.filter((c) =>
               snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
