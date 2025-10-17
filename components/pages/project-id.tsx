@@ -1,7 +1,7 @@
 "use client"
 
 import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
-import { FilterButton } from "components/elements/form"
+import { Button, FilterButton } from "components/elements/form"
 import dayjs from "dayjs"
 import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
@@ -19,6 +19,7 @@ import {
   filterExportClippingGroup,
 } from "@catchball/saku2-admin-lib"
 import { clippingGroupSortFunc } from "services/group"
+import { Modal } from "components/commons/modal"
 
 const g = (props: { clippings: Clipping[]; project: ClippingProject }) =>
   filterExportClippingGroup(groupize(props))
@@ -36,6 +37,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   const [filter, setFilter] = useState<{
     sourcePublisher?: PublisherCategory
   }>({})
+  const [isOpenTweetModal, setIsOpenTweetModal] = useState<boolean>(false)
   useEffect(() => {
     const fetch = async () => {
       if (!project) return
@@ -165,6 +167,13 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                   )}
                 </div>
 
+                {filter.sourcePublisher == "x" && (
+                  <div>
+                    <Button onClick={() => setIsOpenTweetModal(true)}>
+                      Embeddingで表示
+                    </Button>
+                  </div>
+                )}
                 <div
                   style={{
                     borderLeft: "solid 2px #777",
@@ -192,117 +201,126 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                 >
                   {selectedClippings.slice(0, 200).map((clipping) => (
                     <React.Fragment key={clipping[0].id}>
-                      {filter.sourcePublisher == "x" ? (
+                      <a
+                        key={clipping[0].id}
+                        href={clipping[0].url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          background: clipping.some((c) => c.is_main_content)
+                            ? "#f3f3fc"
+                            : "#f6f6f9",
+                          borderBottom: "solid 1px #ddd",
+                          display: "flex",
+                          gap: "1rem",
+                          justifyContent: "space-between",
+                          maxWidth: "32rem",
+                          minWidth: "16rem",
+                          padding: "1rem",
+                          textDecoration: "none",
+                          width: "100%",
+                        }}
+                      >
                         <div
-                          className="light"
                           style={{
                             display: "flex",
-                            justifyContent: "center",
+                            flexFlow: "column",
+                            gap: ".25rem",
+                            minWidth: 0,
+                            position: "relative",
                           }}
                         >
-                          <Tweet
-                            id={clipping[0].url.match(/status\/(\d+)/)?.[1]}
-                          />
-                        </div>
-                      ) : (
-                        <a
-                          key={clipping[0].id}
-                          href={clipping[0].url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            background: clipping.some((c) => c.is_main_content)
-                              ? "#f3f3fc"
-                              : "#f6f6f9",
-                            borderBottom: "solid 1px #ddd",
-                            display: "flex",
-                            gap: "1rem",
-                            justifyContent: "space-between",
-                            maxWidth: "32rem",
-                            minWidth: "16rem",
-                            padding: "1rem",
-                            textDecoration: "none",
-                            width: "100%",
-                          }}
-                        >
-                          <div
+                          <p
                             style={{
-                              display: "flex",
-                              flexFlow: "column",
-                              gap: ".25rem",
-                              minWidth: 0,
-                              position: "relative",
+                              fontSize: ".625rem",
                             }}
                           >
-                            <p
-                              style={{
-                                fontSize: ".625rem",
-                              }}
-                            >
-                              {clipping[0].source_publisher}
-                              {clipping[0].category && (
-                                <>&nbsp;&gt; {clipping[0].category}</>
-                              )}
-                              {clipping.length > 1 && (
-                                <>
-                                  <span
-                                    style={{
-                                      color: "#666",
-                                    }}
-                                  >
-                                    &nbsp;
-                                    {clipping.length}+
-                                  </span>
+                            {clipping[0].source_publisher}
+                            {clipping[0].category && (
+                              <>&nbsp;&gt; {clipping[0].category}</>
+                            )}
+                            {clipping.length > 1 && (
+                              <>
+                                <span
+                                  style={{
+                                    color: "#666",
+                                  }}
+                                >
                                   &nbsp;
-                                </>
-                              )}
-                            </p>
-                            <h3
+                                  {clipping.length}+
+                                </span>
+                                &nbsp;
+                              </>
+                            )}
+                          </p>
+                          <h3
+                            style={{
+                              color: "#66c",
+                              fontSize: "1rem",
+                              fontWeight: "normal",
+                              margin: 0,
+                              maxHeight: "3rem",
+                              overflow: "hidden",
+                              padding: 0,
+                            }}
+                          >
+                            {(
+                              clipping[0].original_title ?? clipping[0].title
+                            ).slice(0, 80)}
+                          </h3>
+                          <p
+                            style={{
+                              color: "#999",
+                              fontSize: ".625rem",
+                              maxHeight: "1.875rem",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {clipping[0].body.slice(0, 100)}
+                          </p>
+                        </div>
+                        {clipping.some((c) => !!c.thumbnail_url) && (
+                          <div>
+                            <figure
                               style={{
-                                color: "#66c",
-                                fontSize: "1rem",
-                                fontWeight: "normal",
-                                margin: 0,
-                                maxHeight: "3rem",
-                                overflow: "hidden",
-                                padding: 0,
+                                backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
+                                backgroundSize: "cover",
+                                width: "8rem",
+                                height: "6rem",
                               }}
-                            >
-                              {(
-                                clipping[0].original_title ?? clipping[0].title
-                              ).slice(0, 80)}
-                            </h3>
-                            <p
-                              style={{
-                                color: "#999",
-                                fontSize: ".625rem",
-                                maxHeight: "1.875rem",
-                                overflow: "hidden",
-                              }}
-                            >
-                              {clipping[0].body.slice(0, 100)}
-                            </p>
+                            ></figure>
                           </div>
-                          {clipping.some((c) => !!c.thumbnail_url) && (
-                            <div>
-                              <figure
-                                style={{
-                                  backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
-                                  backgroundSize: "cover",
-                                  width: "8rem",
-                                  height: "6rem",
-                                }}
-                              ></figure>
-                            </div>
-                          )}
-                        </a>
-                      )}
+                        )}
+                      </a>
                     </React.Fragment>
                   ))}
                 </div>
               </>
             )}
           </div>
+          <Modal
+            isOpen={isOpenTweetModal}
+            onClose={() => setIsOpenTweetModal(false)}
+          >
+            <div
+              className="light"
+              style={{
+                display: "flex",
+                flexFlow: "row",
+                flexWrap: "wrap",
+                gap: ".5rem",
+                justifyContent: "center",
+              }}
+            >
+              {filter.sourcePublisher == "x" &&
+                selectedClippings?.map((clippings, i) => (
+                  <Tweet
+                    key={i}
+                    id={clippings[0].url.match(/status\/(\d+)/)?.[1]}
+                  />
+                ))}
+            </div>
+          </Modal>
         </>
       ) : (
         <>
