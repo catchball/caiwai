@@ -28,3 +28,7 @@ textarea:focus,
 select:focus {
   outline: none;
 }
+
+.react-tweet-theme {
+  margin: 0 !important;
+}
