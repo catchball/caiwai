@@ -1,4 +1,3 @@
-import { PrivateLock } from "components/commons/private-lock"
 import { ProjectIdPage } from "components/pages/project-id"
 import { FC, use } from "react"
 import { api } from "services/api"
@@ -10,11 +9,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
       id,
     })
   )
-  return (
-    <PrivateLock>
-      <ProjectIdPage project={project} />
-    </PrivateLock>
-  )
+  return <ProjectIdPage project={project} />
 }
 
 export default Page
