@@ -17,6 +17,7 @@ export default Page
 export const generateStaticParams = async () => {
   const { projects } = await api.v1.projectsApiV1ClippingsProjectsGet({
     status: "Active",
+    take: 1000,
   })
 
   return projects
