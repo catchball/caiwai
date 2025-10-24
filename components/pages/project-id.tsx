@@ -1,7 +1,11 @@
 "use client"
 
-import { Clipping, ClippingProject } from "@catchball/tansaku-client/lib"
-import { Button, FilterButton } from "components/elements/form"
+import {
+  Clipping,
+  ClippingProject,
+  ArticlePosition,
+} from "@catchball/tansaku-client/lib"
+import { Button, CheckBox, FilterButton } from "components/elements/form"
 import dayjs from "dayjs"
 import React, { FC, useEffect, useState } from "react"
 import { api } from "services/api"
@@ -24,6 +28,8 @@ import { Modal } from "components/commons/modal"
 const g = (props: { clippings: Clipping[]; project: ClippingProject }) =>
   filterExportClippingGroup(groupize(props))
 
+const ArticlePostions: ArticlePosition[] = ["Title", "Beginning", "Body"]
+
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
 }) => {
@@ -36,7 +42,8 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   )
   const [filter, setFilter] = useState<{
     sourcePublisher?: PublisherCategory
-  }>({})
+    keywordPositions?: ArticlePosition[]
+  }>({ keywordPositions: ArticlePostions })
   const [isOpenTweetModal, setIsOpenTweetModal] = useState<boolean>(false)
   useEffect(() => {
     const fetch = async () => {
@@ -96,9 +103,19 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
     fetch()
   }, [date, project, setLoading])
 
-  const selectedClippings = filter.sourcePublisher
-    ? categrizedClippings[filter.sourcePublisher]
-    : clippings
+  const selectedClippings = (
+    filter.sourcePublisher
+      ? categrizedClippings[filter.sourcePublisher]
+      : clippings
+  )?.filter((group) =>
+    filter.keywordPositions
+      ? group.some((c) =>
+          filter.keywordPositions?.includes(
+            c.keyword_position as (typeof ArticlePostions)[number]
+          )
+        )
+      : true
+  )
 
   return (
     <>
@@ -166,14 +183,48 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                       )
                   )}
                 </div>
-
-                {filter.sourcePublisher == "x" && (
-                  <div>
-                    <Button onClick={() => setIsOpenTweetModal(true)}>
-                      Embeddingで表示
-                    </Button>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: ".5rem",
+                    justifyContent: "space-between",
+                    padding: ".5rem",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: ".5rem",
+                    }}
+                  >
+                    {ArticlePostions.map((label) => (
+                      <CheckBox
+                        label={label}
+                        key={label}
+                        checked={filter.keywordPositions?.includes(label)}
+                        onChange={({ target: { checked } }) =>
+                          setFilter({
+                            ...filter,
+                            keywordPositions: checked
+                              ? [...(filter.keywordPositions || []), label]
+                              : (filter.keywordPositions || []).filter(
+                                  (p) => p !== label
+                                ),
+                          })
+                        }
+                      />
+                    ))}
                   </div>
-                )}
+                  {filter.sourcePublisher == "x" && (
+                    <div>
+                      <Button onClick={() => setIsOpenTweetModal(true)}>
+                        Embeddingで表示
+                      </Button>
+                    </div>
+                  )}
+                </div>
                 <div
                   style={{
                     borderLeft: "solid 2px #777",
@@ -199,15 +250,15 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                     flexWrap: "wrap",
                   }}
                 >
-                  {selectedClippings.slice(0, 200).map((clipping) => (
-                    <React.Fragment key={clipping[0].id}>
+                  {selectedClippings.slice(0, 200).map((clippings) => (
+                    <React.Fragment key={clippings[0].id}>
                       <a
-                        key={clipping[0].id}
-                        href={clipping[0].url}
+                        key={clippings[0].id}
+                        href={clippings[0].url}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          background: clipping.some((c) => c.is_main_content)
+                          background: clippings.some((c) => c.is_main_content)
                             ? "#f3f3fc"
                             : "#f6f6f9",
                           borderBottom: "solid 1px #ddd",
@@ -235,11 +286,11 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                               fontSize: ".625rem",
                             }}
                           >
-                            {clipping[0].source_publisher}
-                            {clipping[0].category && (
-                              <>&nbsp;&gt; {clipping[0].category}</>
+                            {clippings[0].source_publisher}
+                            {clippings[0].category && (
+                              <>&nbsp;&gt; {clippings[0].category}</>
                             )}
-                            {clipping.length > 1 && (
+                            {clippings.length > 1 && (
                               <>
                                 <span
                                   style={{
@@ -247,7 +298,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                                   }}
                                 >
                                   &nbsp;
-                                  {clipping.length}+
+                                  {clippings.length}+
                                 </span>
                                 &nbsp;
                               </>
@@ -265,7 +316,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                             }}
                           >
                             {(
-                              clipping[0].original_title ?? clipping[0].title
+                              clippings[0].original_title ?? clippings[0].title
                             ).slice(0, 80)}
                           </h3>
                           <p
@@ -276,14 +327,14 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                               overflow: "hidden",
                             }}
                           >
-                            {clipping[0].body.slice(0, 100)}
+                            {clippings[0].body.slice(0, 100)}
                           </p>
                         </div>
-                        {clipping.some((c) => !!c.thumbnail_url) && (
+                        {clippings.some((c) => !!c.thumbnail_url) && (
                           <div>
                             <figure
                               style={{
-                                backgroundImage: `url(${clipping.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
+                                backgroundImage: `url(${clippings.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
                                 backgroundSize: "cover",
                                 width: "8rem",
                                 height: "6rem",
