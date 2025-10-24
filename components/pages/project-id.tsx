@@ -267,7 +267,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                           justifyContent: "space-between",
                           maxWidth: "32rem",
                           minWidth: "16rem",
+                          overflow: "hidden",
                           padding: "1rem",
+                          position: "relative",
                           textDecoration: "none",
                           width: "100%",
                         }}
@@ -342,6 +344,28 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                             ></figure>
                           </div>
                         )}
+                        <div
+                          style={{
+                            background: clippings.some(
+                              (c) => c.keyword_position == "Title"
+                            )
+                              ? "#14a"
+                              : clippings.some(
+                                    (c) => c.keyword_position == "Beginning"
+                                  )
+                                ? "#289"
+                                : undefined,
+                            color: "#f0f0f0",
+                            fontSize: ".5rem",
+                            height: "1rem",
+                            left: "-.5rem",
+                            position: "absolute",
+                            textAlign: "center",
+                            top: "-.5rem",
+                            transform: "rotate(-45deg)",
+                            width: "1rem",
+                          }}
+                        ></div>
                       </a>
                     </React.Fragment>
                   ))}
