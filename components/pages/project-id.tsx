@@ -29,6 +29,11 @@ const g = (props: { clippings: Clipping[]; project: ClippingProject }) =>
   filterExportClippingGroup(groupize(props))
 
 const ArticlePostions: ArticlePosition[] = ["Title", "Beginning", "Body"]
+const ArticlePostionNameMap: { [key in ArticlePosition]: string } = {
+  Title: "タイトル",
+  Beginning: "冒頭",
+  Body: "本文",
+}
 
 export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   project,
@@ -196,12 +201,17 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                     style={{
                       display: "flex",
                       flexWrap: "wrap",
+                      fontSize: ".875rem",
                       gap: ".5rem",
                     }}
                   >
+                    {project.keyword_list.map((keyword) => (
+                      <span key={keyword}>「{keyword}」</span>
+                    ))}
+                    を
                     {ArticlePostions.map((label) => (
                       <CheckBox
-                        label={label}
+                        label={ArticlePostionNameMap[label]}
                         key={label}
                         checked={filter.keywordPositions?.includes(label)}
                         onChange={({ target: { checked } }) =>
@@ -216,6 +226,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                         }
                       />
                     ))}
+                    に含む
                   </div>
                   {filter.sourcePublisher == "x" && (
                     <div>

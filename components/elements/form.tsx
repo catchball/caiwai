@@ -53,10 +53,10 @@ export const CheckBox: FC<
         borderRadius: "1rem",
         color: "#444",
         cursor: "pointer",
-        fontSize: ".75rem",
-        outline: checked ? "solid" : "none",
-        outlineOffset: "-3px",
-        padding: ".5rem .75rem",
+        fontSize: ".5rem",
+        lineHeight: 2,
+        outline: checked ? "solid 1px" : "none",
+        padding: ".125rem .5rem",
         ...style,
       }}
     >
