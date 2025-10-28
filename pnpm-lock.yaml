@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.2)(postcss@8.4.31)
       '@catchball/tansaku-client':
-        specifier: ^1.17.7
-        version: 1.17.7
+        specifier: ^1.17.10
+        version: 1.17.10
       dayjs:
         specifier: ^1.11.18
         version: 1.11.18
@@ -55,8 +55,8 @@ importers:
         specifier: ^7.37.5
         version: 7.37.5(eslint@9.38.0)
       eslint-plugin-react-hooks:
-        specifier: ^7.0.0
-        version: 7.0.0(eslint@9.38.0)
+        specifier: ^7.0.1
+        version: 7.0.1(eslint@9.38.0)
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
@@ -139,8 +139,8 @@ packages:
   '@catchball/saku2-admin-lib@0.1.7':
     resolution: {integrity: sha512-zCJBeyu2qebNGwoFBfmAE2kMG+WGpMatUXsmZWIYfo6TlF8EHq+fvqb2S2VEk0w8fJTWIDFKZfN+wxkkk2tzuQ==, tarball: https://npm.pkg.github.com/download/@catchball/saku2-admin-lib/0.1.7/cbd54b388b1086f3770fc36b195b5ac3b1df2046}
 
-  '@catchball/tansaku-client@1.17.7':
-    resolution: {integrity: sha512-3JFvjoeBoOhRKT/ADeMOukCicQ2ubguDC+rbBJdzx8uKtoiERTjmBy/m8Oo57j8o6dpDA6rb19nWCQXCLDoV8Q==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.17.7/aebd306a84e866b24c6ead2b2a1cac036e12c50d}
+  '@catchball/tansaku-client@1.17.10':
+    resolution: {integrity: sha512-+VJCIVv3mCdyMxg4wqBBB6cJeTf2414cVSxHUyLP5qvVx/IvjpMw3ciF7oITjpR/OoIGBbXJJablocb0nM/i2A==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.17.10/eb8d5520e811965c18184b6dab799a615a56a353}
 
   '@emnapi/runtime@1.6.0':
     resolution: {integrity: sha512-obtUmAHTMjll499P+D9A3axeJFlhdjOWdKUNs/U6QIGT7V5RjcUW1xToAzjvmgTSQhDbYn/NwfTRoJcQ2rNBxA==}
@@ -879,8 +879,8 @@ packages:
     resolution: {integrity: sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==}
     engines: {node: '>=4'}
 
-  axios@1.12.2:
-    resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
+  axios@1.13.0:
+    resolution: {integrity: sha512-zt40Pz4zcRXra9CVV31KeyofwiNvAbJ5B6YPz9pMJ+yOSLikvPT4Yi5LjfgjRa9CawVYBaD1JQzIVcIvBejKeA==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -1067,8 +1067,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  electron-to-chromium@1.5.240:
-    resolution: {integrity: sha512-OBwbZjWgrCOH+g6uJsA2/7Twpas2OlepS9uvByJjR2datRDuKGYeD+nP8lBBks2qnB7bGJNHDUx7c/YLaT3QMQ==}
+  electron-to-chromium@1.5.241:
+    resolution: {integrity: sha512-ILMvKX/ZV5WIJzzdtuHg8xquk2y0BOGlFOxBVwTpbiXqWIH0hamG45ddU4R3PQ0gYu+xgo0vdHXHli9sHIGb4w==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1136,8 +1136,8 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9
 
-  eslint-plugin-react-hooks@7.0.0:
-    resolution: {integrity: sha512-fNXaOwvKwq2+pXiRpXc825Vd63+KM4DLL40Rtlycb8m7fYpp6efrTp1sa6ZbP/Ap58K2bEKFXRmhURE+CJAQWw==}
+  eslint-plugin-react-hooks@7.0.1:
+    resolution: {integrity: sha512-O0d0m04evaNzEPoSW+59Mezf8Qt0InfgGIBJnpC0h3NH/WjUAR7BIKUfysC6todmtiZ/A0oUVS8Gce0WhBrHsA==}
     engines: {node: '>=18'}
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
@@ -2369,10 +2369,10 @@ snapshots:
 
   '@catchball/saku2-admin-lib@0.1.7(@babel/core@7.28.5)(@babel/template@7.27.2)(@types/react@19.2.2)(postcss@8.4.31)':
     dependencies:
-      '@catchball/tansaku-client': 1.17.7
+      '@catchball/tansaku-client': 1.17.10
       '@googleapis/drive': 19.1.0
       apexcharts: 5.3.5
-      axios: 1.12.2
+      axios: 1.13.0
       csv-parse: 6.1.0
       dayjs: 1.11.18
       google-auth-library: 10.4.2
@@ -2404,9 +2404,9 @@ snapshots:
       - tsx
       - yaml
 
-  '@catchball/tansaku-client@1.17.7':
+  '@catchball/tansaku-client@1.17.10':
     dependencies:
-      axios: 1.12.2
+      axios: 1.13.0
     transitivePeerDependencies:
       - debug
 
@@ -3023,7 +3023,7 @@ snapshots:
 
   axe-core@4.11.0: {}
 
-  axios@1.12.2:
+  axios@1.13.0:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -3058,7 +3058,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.20
       caniuse-lite: 1.0.30001751
-      electron-to-chromium: 1.5.240
+      electron-to-chromium: 1.5.241
       node-releases: 2.0.26
       update-browserslist-db: 1.1.4(browserslist@4.27.0)
 
@@ -3200,7 +3200,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  electron-to-chromium@1.5.240: {}
+  electron-to-chromium@1.5.241: {}
 
   emoji-regex@8.0.0: {}
 
@@ -3365,7 +3365,7 @@ snapshots:
       safe-regex-test: 1.1.0
       string.prototype.includes: 2.0.1
 
-  eslint-plugin-react-hooks@7.0.0(eslint@9.38.0):
+  eslint-plugin-react-hooks@7.0.1(eslint@9.38.0):
     dependencies:
       '@babel/core': 7.28.5
       '@babel/parser': 7.28.5
