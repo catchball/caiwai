@@ -54,6 +54,7 @@ export const CheckBox: FC<
         color: "#444",
         cursor: "pointer",
         fontSize: ".5rem",
+        height: "1.25rem",
         lineHeight: 2,
         outline: checked ? "solid 1px" : "none",
         padding: ".125rem .5rem",
