@@ -357,9 +357,10 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                             <figure
                               style={{
                                 backgroundImage: `url(${clippings.find((c) => !!c.thumbnail_url)?.thumbnail_url})`,
+                                backgroundPosition: "center",
                                 backgroundSize: "cover",
                                 width: "8rem",
-                                height: "6rem",
+                                height: "4.5rem",
                               }}
                             ></figure>
                           </div>
