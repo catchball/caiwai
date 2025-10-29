@@ -114,6 +114,11 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
     fetch()
   }, [date, project, setLoading])
 
+  useEffect(() => {
+    if (filter.keywordPositions.length == 0)
+      setFilter({ ...filter, keywordPositions: ArticlePostions })
+  }, [filter, filter.keywordPositions])
+
   const selectedClippings = (
     filter.sourcePublisher
       ? categrizedClippings[filter.sourcePublisher]
