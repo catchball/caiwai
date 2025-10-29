@@ -144,32 +144,31 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                     padding: ".5rem",
                   }}
                 >
-                  <select
-                    onChange={(e) => setDate(dayjs(e.target.value))}
-                    style={{
-                      background: "#f9f9f9",
-                      border: "none",
-                      borderRadius: "1rem",
-                      padding: ".5rem",
-                    }}
-                  >
-                    {Array(14)
-                      .fill(null)
-                      .map((_, i) => (
-                        <option
-                          key={i}
-                          value={dayjs()
-                            .subtract(i, "days")
-                            .startOf("day")
-                            .format("YYYY-MM-DD HH:mm:ss")}
-                        >
-                          {dayjs()
-                            .startOf("day")
-                            .subtract(i, "days")
-                            .format("M/D")}
-                        </option>
-                      ))}
-                  </select>
+                  {Array(7)
+                    .fill(0)
+                    .map((_, i) =>
+                      dayjs()
+                        .subtract(6 - i, "days")
+                        .startOf("day")
+                    )
+                    .map((day, i) => (
+                      <FilterButton
+                        key={i}
+                        isActive={day.date() == date.date()}
+                        onClick={() => setDate(day)}
+                      >
+                        {day.format("M/D ddd")}
+                      </FilterButton>
+                    ))}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: ".5rem",
+                    padding: ".5rem",
+                  }}
+                >
                   {publisherCategoriesWithLabel.map(
                     ({ label, value }) =>
                       (!value || categrizedClippings[value].length > 0) && (
