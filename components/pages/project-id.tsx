@@ -98,6 +98,14 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
               snsPublisherMap.sns.includes(c.source_publisher?.toLowerCase())
             ),
           }).toSorted(clippingGroupSortFunc),
+          release: g({
+            project,
+            clippings: clippings.filter((c) =>
+              snsPublisherMap.release.includes(
+                c.source_publisher?.toLowerCase()
+              )
+            ),
+          }).toSorted(clippingGroupSortFunc),
         })
       } finally {
         setLoading(false)

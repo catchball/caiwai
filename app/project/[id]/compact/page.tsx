@@ -67,6 +67,14 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
         ),
       })
     ).toSorted(clippingGroupSortFunc),
+    release: filterExportClippingGroup(
+      groupize({
+        project,
+        clippings: clippings.filter((c) =>
+          snsPublisherMap.release.includes(c.source_publisher?.toLowerCase())
+        ),
+      })
+    ).toSorted(clippingGroupSortFunc),
   }
 
   return (

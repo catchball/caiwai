@@ -1,4 +1,10 @@
-export const publisherCategories = ["news", "youtube", "x", "sns"] as const
+export const publisherCategories = [
+  "news",
+  "youtube",
+  "x",
+  "sns",
+  "release",
+] as const
 
 export type PublisherCategory = (typeof publisherCategories)[number]
 
@@ -41,6 +47,20 @@ export const snsPublisherMap: {
     "gooブログ",
     "ライブドアブログ",
   ],
+  release: [
+    "pr times",
+    "アットプレス",
+    "@‌press",
+    "共同通信prワイヤー",
+    "digital pr platform",
+    "ドリームニュース",
+    "dreamnews",
+    "newscast",
+    "valuepress",
+    "pr times story",
+    "pr newswire",
+    "ぷれにゅー",
+  ],
 } as const
 
 export const publisherCategoriesWithLabel: {
@@ -52,6 +72,7 @@ export const publisherCategoriesWithLabel: {
   { label: "X", value: "x" },
   { label: "YouTube", value: "youtube" },
   { label: "Others", value: "sns" },
+  { label: "Press Releases", value: "release" },
 ] as const
 
 export const compactPublisherCatetoriesWithLabel =
