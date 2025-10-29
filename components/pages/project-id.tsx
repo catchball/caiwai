@@ -42,9 +42,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
   const [clippings, setClippings] = useState<Clipping[][]>()
   const [categrizedClippings, setCategrizedClippings] =
     useState<{ [key in PublisherCategory]: Clipping[][] }>()
-  const [date, setDate] = useState<dayjs.Dayjs>(
-    dayjs().startOf("day").subtract(1, "days")
-  )
+  const [date, setDate] = useState<dayjs.Dayjs>(dayjs().startOf("day"))
   const [filter, setFilter] = useState<{
     sourcePublisher?: PublisherCategory
     keywordPositions?: ArticlePosition[]
@@ -161,14 +159,13 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
                         <option
                           key={i}
                           value={dayjs()
-                            .startOf("day")
-                            .subtract(i + 1, "days")
+                            .subtract(i, "days")
                             .startOf("day")
                             .format("YYYY-MM-DD HH:mm:ss")}
                         >
                           {dayjs()
                             .startOf("day")
-                            .subtract(i + 1, "days")
+                            .subtract(i, "days")
                             .format("M/D")}
                         </option>
                       ))}
