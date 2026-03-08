@@ -17,18 +17,18 @@
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@catchball/saku2-admin-lib": "^0.1.7",
-    "@catchball/tansaku-client": "^1.17.10",
+    "@catchball/tansaku-client": "^1.19.24",
     "dayjs": "^1.11.18",
     "jotai": "^2.15.0",
-    "next": "^16.0.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-tweet": "^3.2.2"
+    "next": "^16.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-tweet": "^3.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@types/node": "^24.9.1",
-    "@types/react": "^19.2.2",
+    "@types/react": "^19.2.14",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jsx-a11y": "^6.10.2",
