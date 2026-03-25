@@ -1,4 +1,4 @@
-import { AuthProvider } from "components/commons/auth-provider"
+import { AuthInitializer } from "components/commons/auth-initializer"
 import { Loading } from "components/commons/loading"
 import "../styles/global.css"
 
@@ -22,17 +22,16 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
             caiwai
           </h1>
         </header>
-        <AuthProvider>
-          <main
-            style={{
-              margin: "auto",
-              maxWidth: "64rem",
-            }}
-          >
-            {children}
-          </main>
-          <Loading />
-        </AuthProvider>
+        <AuthInitializer />
+        <main
+          style={{
+            margin: "auto",
+            maxWidth: "64rem",
+          }}
+        >
+          {children}
+        </main>
+        <Loading />
         <footer style={{ textAlign: "center", padding: "1rem" }}>
           <p>Curated and Processed by catchball Inc.</p>
         </footer>

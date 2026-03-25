@@ -17,11 +17,7 @@ import {
 import { Tweet } from "react-tweet"
 import { useSetAtom } from "jotai"
 import { loadingAtom } from "services/store"
-import {
-  ExportActiveClippingStatusList,
-  groupize,
-  filterExportClippingGroup,
-} from "@catchball/saku2-admin-lib"
+import { groupize, filterExportClippingGroup } from "@catchball/saku2-admin-lib"
 import { clippingGroupSortFunc } from "services/group"
 import { Modal } from "components/commons/modal"
 
@@ -54,18 +50,9 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
       try {
         setLoading(true)
 
-        const { clippings: clippingIndexes } =
-          await api.v1.indexApiV1ClippingsGet({
-            projectId: project.id,
-            publishDate: date.subtract(1, "days").format("YYYY-MM-DD HH:mm:ss"),
-            publishDateBefore: date
-              .startOf("day")
-              .format("YYYY-MM-DD HH:mm:ss"),
-            statusList: ExportActiveClippingStatusList,
-          })
-
-        const { clippings } = await api.v1.selectApiV1ClippingsSelectPost({
-          requestBody: { ids: clippingIndexes.map((c) => c.id) },
+        const { clippings } = await api.v1.indexApiV1ClippingsGet({
+          projectId: project.id,
+          publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
         })
 
         setClippings(g({ clippings, project }).toSorted(clippingGroupSortFunc))
