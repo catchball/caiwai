@@ -17,10 +17,7 @@ const Page: FC = ({ ...props }) => {
 
 const Projects: FC = () => {
   const fetchProjects = async () => {
-    const { projects } = await api.v1.projectsApiV1ClippingsProjectsGet({
-      status: "Active",
-      take: 1000,
-    })
+    const { projects } = await api.v1.projectsApiV1ProjectsProjectsGet()
 
     return projects.filter((p) => p.has_scheduled_export)
   }

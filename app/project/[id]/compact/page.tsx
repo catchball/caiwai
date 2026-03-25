@@ -13,12 +13,12 @@ import { clippingGroupSortFunc } from "services/group"
 const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
   const { id } = use(params)
   const { project } = use(
-    api.v1.showProjectApiV1ClippingsProjectsIdGet({
+    api.admin.showProjectApiAdminProjectsIdGet({
       id,
     })
   )
   const { clippings } = use(
-    api.v1.indexApiV1ClippingsGet({
+    api.admin.indexApiAdminClippingsGet({
       projectId: project.id,
       publishDate: dayjs()
         .startOf("day")
@@ -92,7 +92,7 @@ const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
 export default Page
 
 export const generateStaticParams = async () => {
-  const { projects } = await api.v1.projectsApiV1ClippingsProjectsGet({
+  const { projects } = await api.admin.projectsApiAdminProjectsGet({
     status: "Active",
     take: 1000,
   })

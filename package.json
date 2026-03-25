@@ -17,7 +17,7 @@
   "packageManager": "pnpm@10.19.0",
   "dependencies": {
     "@catchball/saku2-admin-lib": "^0.1.7",
-    "@catchball/tansaku-client": "^1.19.24",
+    "@catchball/tansaku-client": "^1.21.0",
     "dayjs": "^1.11.19",
     "firebase": "^12.10.0",
     "jotai": "^2.18.1",
