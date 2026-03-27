@@ -26,6 +26,8 @@ jobs:
           node-version: "24"
         env:
           GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create .env.production
+        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env.production
       - uses: pnpm/action-setup@v4
       - run: pnpm i
         env:
