@@ -3,6 +3,7 @@
 import { ClippingProject } from "@catchball/tansaku-client/lib"
 import { PrivateLock } from "components/commons/private-lock"
 import { ProfileCard } from "components/modules/profile-card"
+import { ProjectList } from "components/modules/project-list"
 import { useAtomValue } from "jotai"
 import Link from "next/link"
 import React, { FC, Suspense, useEffect, useState } from "react"
@@ -33,32 +34,11 @@ const Projects: FC = () => {
     if (user) fetchProjects()
   }, [user])
 
+  if (!user) return null
   return (
     <>
-      {user && <ProfileCard user={user} />}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: ".5rem",
-          padding: "1rem",
-        }}
-      >
-        {projects.map((project) => (
-          <Link
-            key={project.id}
-            href={`/project/${project.id}`}
-            style={{
-              background: "#f9f9f9",
-              borderRadius: "2rem",
-              display: "block",
-              padding: ".25rem .75rem",
-            }}
-          >
-            {project.name}
-          </Link>
-        ))}
-      </div>
+      <ProfileCard user={user} />
+      <ProjectList projects={projects} />
     </>
   )
 }
