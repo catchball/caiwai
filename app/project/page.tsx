@@ -37,8 +37,17 @@ const Projects: FC = () => {
   if (!user) return null
   return (
     <>
-      <ProfileCard user={user} />
-      <ProjectList projects={projects} />
+      <div
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          gap: "2rem",
+          padding: "1rem",
+        }}
+      >
+        <ProfileCard user={user} />
+        <ProjectList projects={projects} />
+      </div>
     </>
   )
 }

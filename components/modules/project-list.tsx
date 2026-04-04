@@ -9,9 +9,9 @@ export const ProjectList: FC<{ projects: ClippingProject[] }> = ({
     <div
       style={{
         display: "flex",
-        flexFlow: "column",
-        padding: "1rem",
-        gap: ".5rem",
+        flexFlow: "row",
+        flexWrap: "wrap",
+        gap: "1rem",
       }}
     >
       {projects.map((project) => (
@@ -30,9 +30,11 @@ const ProjectItem: FC<{ project: ClippingProject }> = ({ project }) => {
         borderRadius: ".5rem",
         display: "flex",
         flexFlow: "column",
-        gap: ".25rem",
-        padding: ".75rem 1rem",
+        gap: ".5rem",
+        maxWidth: "34.5rem",
+        padding: "1rem 1.5rem",
         textDecoration: "none",
+        width: "100%",
       }}
     >
       <div style={{ fontWeight: "bold" }}>{project.name}</div>

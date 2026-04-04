@@ -1,6 +1,7 @@
 import { AuthInitializer } from "components/commons/auth-initializer"
 import { Loading } from "components/commons/loading"
 import "../styles/global.css"
+import Link from "next/link"
 
 export const metadata = {
   title: "caiwai",
@@ -13,20 +14,28 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <header
           style={{
+            alignItems: "center",
             backgroundColor: "#f8f9fa",
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
+            padding: ".5rem",
           }}
         >
-          <h1 style={{ fontSize: "1rem", lineHeight: 1.5, margin: 0 }}>
+          <h1 style={{ fontSize: "1.5rem", lineHeight: 1.5, margin: 0 }}>
             caiwai
           </h1>
+          <Link
+            href="/project"
+            style={{ fontSize: ".75rem", fontWeight: "bold" }}
+          >
+            マイページ
+          </Link>
         </header>
         <AuthInitializer />
         <main
           style={{
             margin: "auto",
-            maxWidth: "64rem",
+            maxWidth: "72rem",
           }}
         >
           {children}

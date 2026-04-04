@@ -6,7 +6,8 @@ export const ProfileCard: FC<{ user: User }> = ({ user }) => {
     <div
       style={{
         alignItems: "center",
-        borderBottom: "solid 1px #eee",
+        background: "#f9f9f9",
+        borderRadius: ".5rem",
         display: "flex",
         gap: "1rem",
         padding: "1rem",
@@ -19,10 +20,10 @@ export const ProfileCard: FC<{ user: User }> = ({ user }) => {
           borderRadius: "50%",
           color: "#fff",
           display: "flex",
-          fontSize: "1.25rem",
-          height: "2.5rem",
+          fontSize: "1.5rem",
+          height: "3rem",
           justifyContent: "center",
-          width: "2.5rem",
+          width: "3rem",
         }}
       >
         {user.name.charAt(0)}
