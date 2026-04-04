@@ -52,7 +52,9 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
 
         {isSent ? (
           <>
-            <p>ログインメールを送信しました</p>
+            <p style={{ padding: "1rem", textAlign: "center" }}>
+              ログインメールを送信しました
+            </p>
           </>
         ) : (
           <>
