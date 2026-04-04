@@ -4,8 +4,8 @@ import { ClippingProject } from "@catchball/tansaku-client/lib"
 import { PrivateLock } from "components/commons/private-lock"
 import { ProfileCard } from "components/modules/profile-card"
 import { ProjectList } from "components/modules/project-list"
+import { SignOutButton } from "components/modules/sign-out-button"
 import { useAtomValue } from "jotai"
-import Link from "next/link"
 import React, { FC, Suspense, useEffect, useState } from "react"
 import { api } from "services/api"
 import { userAtom } from "services/store"
@@ -46,6 +46,9 @@ const Projects: FC = () => {
         }}
       >
         <ProfileCard user={user} />
+        <div>
+          <SignOutButton />
+        </div>
         <ProjectList projects={projects} />
       </div>
     </>

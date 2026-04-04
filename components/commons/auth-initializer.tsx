@@ -24,8 +24,10 @@ export const AuthInitializer = () => {
       }
     }
     return onAuthStateChanged(auth, async (firebaseUser) => {
-      const { user } = await api.v1.meApiV1UsersMeGet()
-      setUser(user)
+      if (firebaseUser) {
+        const { user } = await api.v1.meApiV1UsersMeGet()
+        setUser(user)
+      }
     })
   }, [setUser])
 

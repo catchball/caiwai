@@ -4,7 +4,8 @@ import type { User } from "@catchball/tansaku-client/lib"
 
 export const loadingAtom = atom(false)
 // undefined = 認証状態確認中, null = 未ログイン, object = ログイン済み
-const initialUser: FirebaseUser | null | undefined = undefined
-export const firebaseUserAtom = atom(initialUser)
+const initialFirebaseUser: FirebaseUser | null | undefined = undefined
+export const firebaseUserAtom = atom(initialFirebaseUser)
 
-export const userAtom = atom<User>()
+const initialUser: User | null | undefined = undefined
+export const userAtom = atom(initialUser)

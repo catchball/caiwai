@@ -14,7 +14,7 @@ export const FilterButton: FC<
         cursor: "pointer",
         outline: "none",
         outlineOffset: "-3px",
-        padding: ".5rem .75rem",
+        padding: ".5rem 1rem",
         ...style,
       }}
     ></button>
@@ -23,7 +23,15 @@ export const FilterButton: FC<
 
 export const Input: FC<ComponentProps<"input">> = ({ style, ...props }) => {
   return (
-    <input style={{ border: "none", padding: ".25rem", ...style }} {...props} />
+    <input
+      style={{
+        border: "none",
+        borderRadius: ".25rem",
+        padding: ".5rem 1rem",
+        ...style,
+      }}
+      {...props}
+    />
   )
 }
 
@@ -32,9 +40,11 @@ export const Button: FC<ComponentProps<"button">> = ({ style, ...props }) => {
     <button
       style={{
         background: "#444",
+        borderRadius: ".25rem",
         color: "#eee",
+        cursor: "pointer",
         border: "none",
-        padding: ".25rem .5rem",
+        padding: ".5rem 1rem",
         ...style,
       }}
       {...props}

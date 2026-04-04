@@ -1,14 +1,8 @@
 import type { FC, ComponentProps } from "react"
 
-type ModalProps = { isOpen: boolean; onClose?: () => void }
-
-export const Modal: FC<ComponentProps<"div"> & ModalProps> = ({
-  children,
-  isOpen,
-  onClose,
-  style,
-  ...props
-}: ComponentProps<"div"> & ModalProps) => {
+export const Modal: FC<
+  ComponentProps<"div"> & { isOpen: boolean; onClose?: () => void }
+> = ({ children, isOpen, onClose, style, ...props }) => {
   return (
     <>
       {isOpen && (

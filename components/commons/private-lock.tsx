@@ -1,21 +1,24 @@
 "use client"
 
 import { sendSignInLinkToEmail } from "firebase/auth"
-import { useAtomValue } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import { ComponentProps, FC, SubmitEventHandler, useState } from "react"
 import { auth } from "services/firebase"
-import { userAtom } from "services/store"
+import { loadingAtom, userAtom } from "services/store"
 import { Button, Input } from "components/elements/form"
 import { Modal } from "./modal"
+import Link from "next/link"
 
 export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
   const [email, setEmail] = useState<string>()
   const [error, setError] = useState<string>()
   const [isSent, setIsSent] = useState<boolean>(false)
   const user = useAtomValue(userAtom)
+  const setIsLoading = useSetAtom(loadingAtom)
 
   const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
+    setIsLoading(true)
     setError(undefined)
     try {
       await sendSignInLinkToEmail(auth, email, {
@@ -26,47 +29,73 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
       setIsSent(true)
     } catch {
       setError("認証エラー")
+    } finally {
+      setIsLoading(false)
     }
   }
-
-  if (user === undefined) return null
 
   if (user) return <section {...props} />
 
   return (
-    <Modal isOpen={true}>
-      <h3 style={{ textAlign: "center" }}>非公開ページ</h3>
-      <p style={{ textAlign: "center" }}>
-        アクセスするにはログインしてください
-      </p>
-      {isSent ? (
-        <>
-          <p>ログインメールを送信しました</p>
-        </>
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexFlow: "column",
-            gap: "1rem",
-            padding: "1rem",
-          }}
-        >
-          <Input
-            type="email"
-            value={email ?? ""}
-            placeholder="メールアドレス"
-            onChange={({ target: { value } }) => setEmail(value)}
-          />
-          {error && (
-            <p style={{ color: "red", margin: 0, textAlign: "center" }}>
-              {error}
+    <>
+      <Modal
+        isOpen={true}
+        style={{
+          display: "flex",
+          flexFlow: "column",
+          justifyContent: "center",
+          maxWidth: "32rem",
+        }}
+      >
+        <p style={{ padding: ".5rem", textAlign: "center" }}>Caiwai</p>
+        <h2 style={{ textAlign: "center" }}>会員向けサービス</h2>
+
+        {isSent ? (
+          <>
+            <p>ログインメールを送信しました</p>
+          </>
+        ) : (
+          <>
+            <p style={{ textAlign: "center" }}>
+              アクセスするにはログインしてください
             </p>
-          )}
-          <Button>ログイン</Button>
-        </form>
-      )}
-    </Modal>
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                display: "flex",
+                flexFlow: "column",
+                gap: "1rem",
+                padding: "1rem",
+              }}
+            >
+              <Input
+                type="email"
+                value={email ?? ""}
+                placeholder="メールアドレス"
+                onChange={({ target: { value } }) => setEmail(value)}
+              />
+              {error && (
+                <p style={{ color: "red", margin: 0, textAlign: "center" }}>
+                  {error}
+                </p>
+              )}
+              <Button>ログイン</Button>
+            </form>
+          </>
+        )}
+        <Link
+          href="/"
+          style={{ display: "block", padding: "1rem", textAlign: "center" }}
+        >
+          トップに戻る
+        </Link>
+        <a
+          href="//catchball.jp"
+          style={{ display: "block", padding: "1rem", textAlign: "center" }}
+        >
+          問い合わせる
+        </a>
+      </Modal>
+    </>
   )
 }
