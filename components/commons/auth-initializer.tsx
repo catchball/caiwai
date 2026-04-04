@@ -7,6 +7,7 @@ import {
 } from "firebase/auth"
 import { useSetAtom } from "jotai"
 import { useEffect } from "react"
+import { api } from "services/api"
 import { auth } from "services/firebase"
 import { userAtom } from "services/store"
 
@@ -22,7 +23,10 @@ export const AuthInitializer = () => {
         })
       }
     }
-    return onAuthStateChanged(auth, (user) => setUser(user))
+    return onAuthStateChanged(auth, async (firebaseUser) => {
+      const { user } = await api.v1.meApiV1UsersMeGet()
+      setUser(user)
+    })
   }, [setUser])
 
   return null

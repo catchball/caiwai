@@ -6,6 +6,7 @@ import { ComponentProps, FC, SubmitEventHandler, useState } from "react"
 import { auth } from "services/firebase"
 import { userAtom } from "services/store"
 import { Button, Input } from "components/elements/form"
+import { Modal } from "./modal"
 
 export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
   const [email, setEmail] = useState<string>()
@@ -33,7 +34,7 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
   if (user) return <section {...props} />
 
   return (
-    <section style={{ margin: "auto", maxWidth: "28rem", padding: "1rem" }}>
+    <Modal isOpen={true}>
       <h3 style={{ textAlign: "center" }}>非公開ページ</h3>
       <p style={{ textAlign: "center" }}>
         アクセスするにはログインしてください
@@ -66,6 +67,6 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
           <Button>ログイン</Button>
         </form>
       )}
-    </section>
+    </Modal>
   )
 }

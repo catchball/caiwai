@@ -2,20 +2,21 @@
 
 import { ClippingProject } from "@catchball/tansaku-client/lib"
 import { PrivateLock } from "components/commons/private-lock"
+import { ProfileCard } from "components/modules/profile-card"
 import { useAtomValue } from "jotai"
 import Link from "next/link"
 import React, { FC, Suspense, useEffect, useState } from "react"
 import { api } from "services/api"
 import { userAtom } from "services/store"
 
-const Page: FC = ({ ...props }) => {
+const Page: FC = () => {
   return (
-    <React.Fragment {...props}>
-      <PrivateLock>
-        <Suspense fallback={<>Loading</>}>
+    <React.Fragment>
+      <Suspense fallback={<>Loading</>}>
+        <PrivateLock>
           <Projects />
-        </Suspense>
-      </PrivateLock>
+        </PrivateLock>
+      </Suspense>
     </React.Fragment>
   )
 }
@@ -34,7 +35,7 @@ const Projects: FC = () => {
 
   return (
     <>
-      <div>{user.displayName}</div>
+      {user && <ProfileCard user={user} />}
       <div
         style={{
           display: "flex",
