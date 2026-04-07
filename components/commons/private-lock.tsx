@@ -75,6 +75,7 @@ export const PrivateLock: FC<ComponentProps<"section">> = (props) => {
                 value={email ?? ""}
                 placeholder="メールアドレス"
                 onChange={({ target: { value } }) => setEmail(value)}
+                required
               />
               {error && (
                 <p style={{ color: "red", margin: 0, textAlign: "center" }}>
