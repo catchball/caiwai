@@ -52,7 +52,7 @@ export const ProjectIdPage: FC<{ project: ClippingProject }> = ({
 
         const { clippings } = await api.v1.indexApiV1ClippingsGet({
           projectId: project.id,
-          publishDate: date.format("YYYY-MM-DD HH:mm:ss"),
+          publishDate: date.subtract(9, "hours").format("YYYY-MM-DD HH:mm:ss"),
         })
 
         setClippings(g({ clippings, project }).toSorted(clippingGroupSortFunc))

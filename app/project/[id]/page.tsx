@@ -1,26 +1,35 @@
-import { ProjectIdPage } from "components/pages/project-id"
-import { FC, use } from "react"
-import { api } from "services/api"
+"use client"
 
-const Page: FC<{ params: Promise<{ id: string }> }> = ({ params }) => {
-  const { id } = use(params)
-  const { project } = use(
-    api.admin.showProjectApiAdminProjectsIdGet({
-      id,
-    })
-  )
+import { ClippingProject } from "@catchball/tansaku-client/lib"
+import { ProjectIdPage } from "components/pages/project-id"
+import { useAtomValue } from "jotai"
+import { FC, useEffect, useState } from "react"
+import { api } from "services/api"
+import { userAtom } from "services/store"
+
+const Page: FC = () => {
+  const [project, setProject] = useState<ClippingProject | null>(undefined)
+  const user = useAtomValue(userAtom)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const projectId = window.location.pathname
+        .split("/")
+        .filter((t) => t.length > 0)
+        .slice(-1)[0]
+      try {
+        const { project } = await api.v1.showApiV1ProjectsProjectIdGet({
+          projectId,
+        })
+        setProject(project)
+      } catch (e) {
+        setProject(null)
+      }
+    }
+    if (user) fetch()
+  }, [user])
+
   return <ProjectIdPage project={project} />
 }
 
 export default Page
-
-export const generateStaticParams = async () => {
-  const { projects } = await api.admin.projectsApiAdminProjectsGet({
-    status: "Active",
-    take: 1000,
-  })
-
-  return projects
-    .filter((p) => p.has_scheduled_export)
-    .map((project) => ({ id: project.id }))
-}

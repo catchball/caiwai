@@ -12,8 +12,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(postcss@8.4.31)
       '@catchball/tansaku-client':
-        specifier: ^1.22.0
-        version: 1.22.0
+        specifier: ^1.22.3
+        version: 1.22.3
       dayjs:
         specifier: ^1.11.20
         version: 1.11.20
@@ -142,8 +142,8 @@ packages:
   '@catchball/saku2-admin-lib@0.1.7':
     resolution: {integrity: sha512-zCJBeyu2qebNGwoFBfmAE2kMG+WGpMatUXsmZWIYfo6TlF8EHq+fvqb2S2VEk0w8fJTWIDFKZfN+wxkkk2tzuQ==, tarball: https://npm.pkg.github.com/download/@catchball/saku2-admin-lib/0.1.7/cbd54b388b1086f3770fc36b195b5ac3b1df2046}
 
-  '@catchball/tansaku-client@1.22.0':
-    resolution: {integrity: sha512-5nGW76tm65ATmUBpA1xMi1I/DB6aTpUwrIdGBuMyFfHzMcZARqXymGSrQKrGJrqFaWDsEc6dzYDRxwrCy8ui7w==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.22.0/506fc64fe44395357e0f17803140c9df0a8cd83f}
+  '@catchball/tansaku-client@1.22.3':
+    resolution: {integrity: sha512-kM3f0MSdm67VzZe7qHQJ75i/0qHlmpXywWask/sPy5jEGOdScBUmkcoBIGyPI5E1j8034R3e1PKPpUylNy01sg==, tarball: https://npm.pkg.github.com/download/@catchball/tansaku-client/1.22.3/d000eb8df9642f8fd6f5bbe793799c179173a47d}
 
   '@emnapi/runtime@1.8.1':
     resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
@@ -2622,7 +2622,7 @@ snapshots:
 
   '@catchball/saku2-admin-lib@0.1.7(@babel/core@7.29.0)(@babel/template@7.28.6)(@types/react@19.2.14)(postcss@8.4.31)':
     dependencies:
-      '@catchball/tansaku-client': 1.22.0
+      '@catchball/tansaku-client': 1.22.3
       '@googleapis/drive': 19.2.1
       apexcharts: 5.10.3
       axios: 1.13.6
@@ -2657,7 +2657,7 @@ snapshots:
       - tsx
       - yaml
 
-  '@catchball/tansaku-client@1.22.0':
+  '@catchball/tansaku-client@1.22.3':
     dependencies:
       axios: 1.13.6
     transitivePeerDependencies:
